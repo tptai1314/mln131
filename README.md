@@ -31,8 +31,7 @@ Mặt trước: câu hỏi + đủ A B C D → mặt sau: đáp án **in xanh**.
 | **Dễ** | tốt nghiệp 4 ngày | khoảng cách × hệ số dễ × 1,3 |
 
 Tham số (kiểu Anki mặc định): bước học `1 → 10 phút`, tốt nghiệp `1 ngày`, hệ số dễ khởi đầu `250 %`,
-xem trước `20 thẻ mới/ngày` — chỉnh được trong ⚙️ Cài đặt. Có **Hoàn tác** (Z), chế độ **🎯 Học hôm nay (theo lịch)**
-và **📚 Học tự do**, xuất tiến độ ra file JSON. Tiến độ lưu trong trình duyệt nên đóng tab vẫn giữ nguyên lịch.
+xem trước `20 thẻ mới/ngày` — chỉnh được trong ⚙️ Cài đặt. Có **Hoàn tác** (Z), 3 chế độ: **🎯 Học hôm nay (theo lịch)** · **📚 Học tự do** · **📋 Danh sách câu hỏi** (xem trọn nhóm một lần, có tìm kiếm, mở rộng/thu gọn, in ra A4), và xuất tiến độ ra file JSON. Tiến độ lưu trong trình duyệt nên đóng tab vẫn giữ nguyên lịch.
 
 ### ⏳ Chỉ còn vài ngày trước khi thi?
 

@@ -86,6 +86,31 @@ button.sm{padding:8px 11px;font-size:.84rem}
 @media(max-width:600px){.face{min-height:300px;padding:16px}.q{font-size:.98rem}
   .srs{grid-template-columns:repeat(2,1fr)}}
 
+/* ---------- danh sach cau hoi ---------- */
+.listbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.listbar input{flex:1;min-width:200px;font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.listbar select{font:inherit;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:#fff}
+.listm{font-size:.83rem;color:var(--muted);margin-bottom:10px;line-height:1.7}
+.item{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;overflow:hidden}
+.ihead{display:flex;gap:7px;align-items:flex-start;padding:10px 12px;cursor:pointer}
+.ihead:hover{background:#f8fafc}
+.ihead .tag{white-space:nowrap}
+.iq{font-size:.92rem;font-weight:650;line-height:1.45;flex:1}
+.iarrow{margin-left:auto;color:#94a3b8;font-weight:900;transition:transform .2s;flex:0 0 auto}
+.item.open .iarrow{transform:rotate(90deg)}
+.ibody{display:none;padding:0 12px 12px}
+.item.open .ibody{display:block;border-top:1px solid #eef2f7;padding-top:10px}
+.ibody .anslabel{margin-top:10px}
+.imeta{font-size:.76rem;color:var(--muted);margin-top:10px;line-height:1.6}
+.tocrow{display:flex;gap:10px;padding:6px 0;border-bottom:1px dashed #eef2f7;align-items:flex-start}
+.tocrow:last-child{border-bottom:0}
+.toclbl{min-width:200px;font-size:.82rem;font-weight:700;color:#334155}
+.tocnums{display:flex;flex-wrap:wrap;gap:4px;flex:1}
+.tocnum{border:1px solid var(--line);background:#fff;color:#1d4ed8;font-size:.74rem;font-weight:700;
+        border-radius:6px;padding:1px 6px;cursor:pointer;font-family:inherit}
+.tocnum:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
+@media(max-width:600px){.tocrow{flex-direction:column;gap:4px}.toclbl{min-width:0}}
+
 /* ---------- vung chi de in ---------- */
 #printArea{display:none}
 @media print{
@@ -108,6 +133,14 @@ button.sm{padding:8px 11px;font-size:.84rem}
   .slot.single .p-front{flex:1;display:flex;flex-direction:column}
   .p-cut{border-top:1px dashed #94a3b8;margin:3mm 0}
   .p-back{display:flex;flex-direction:column;justify-content:center}
+  /* danh sach cau hoi in doc */
+  .listdoc{padding:14mm 15mm;font-size:10pt;line-height:1.5}
+  .l-title{font-size:13pt;font-weight:900;margin-bottom:4mm;border-bottom:1.2px solid #1e293b;padding-bottom:2mm}
+  .l-item{break-inside:avoid;page-break-inside:avoid;margin-bottom:4.5mm}
+  .l-head{font-size:9pt;font-weight:800;color:#0f172a}
+  .l-q{font-weight:700;margin:.8mm 0}
+  .l-o{margin-left:6mm;color:#1e293b}
+  .l-a{color:#1d4ed8;font-weight:800;margin-top:.8mm}
 }
 </style>
 </head>
@@ -119,15 +152,16 @@ button.sm{padding:8px 11px;font-size:.84rem}
   <div class="tabs">
     <button class="tab on" id="tabSched">🎯 Học hôm nay (theo lịch)</button>
     <button class="tab" id="tabFree">📚 Học tự do</button>
+    <button class="tab" id="tabList">📋 Danh sách câu hỏi</button>
   </div>
 
   <div class="chips" id="chips"></div>
   <div class="stats" id="stats"></div>
 
-  <div class="bar"><i id="bar"></i></div>
-  <div class="meta"><span id="mPos">—</span><span id="mStat"></span></div>
+  <div class="bar" id="progBar"><i id="bar"></i></div>
+  <div class="meta" id="metaRow"><span id="mPos">—</span><span id="mStat"></span></div>
 
-  <div class="scene">
+  <div class="scene" id="scene">
     <div class="card" id="card">
       <div class="face front">
         <div class="tagrow" id="fTags"></div>
@@ -150,12 +184,26 @@ button.sm{padding:8px 11px;font-size:.84rem}
     <button class="srsbtn easy"  id="bEasy"><span>Dễ</span><small id="lEasy">4 ngày</small></button>
   </div>
 
-  <div class="controls">
+  <div class="controls" id="mainControls">
     <button class="ghost sm" id="undo">↶ Hoàn tác</button>
     <button class="ghost sm" id="shuf">🔀 Trộn</button>
     <button class="ghost sm" id="checkNow">🔄 Kiểm tra thẻ đến hạn</button>
     <button class="ghost sm" id="prev">◀ Trước</button>
     <button class="ghost sm" id="next">Sau ▶</button>
+  </div>
+
+  <div id="listPanel" style="display:none">
+    <details id="tocBox" style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 14px;margin-bottom:12px">
+      <summary style="font-weight:800;font-size:.9rem;cursor:pointer">📑 Mục lục – mỗi danh mục gồm những câu nào (bấm số câu để xem)</summary>
+      <div id="tocBody" style="margin-top:10px"></div>
+    </details>
+    <div class="listbar">
+      <input id="listSearch" type="search" placeholder="🔍 Tìm trong câu hỏi / phương án / đáp án… (gõ số câu để mở đúng câu đó)">
+      <button class="ghost sm" id="listExpand">☑️ Mở rộng tất cả</button>
+      <button class="ghost sm" id="listPrint">🖨️ In danh sách</button>
+    </div>
+    <div class="listm" id="listCount"></div>
+    <div id="listView"></div>
   </div>
 
   <div class="legend">
@@ -332,15 +380,19 @@ function schedule(c0, rating, now){
   return c;
 }
 
+function num(x){
+  const r = Math.round(x);
+  return Math.abs(x - r) < 0.05 ? String(r) : x.toFixed(1).replace(".", ",");
+}
 function fmt(ms){
   ms = Math.max(0, ms);
   if (ms < MIN) return "dưới 1 phút";
   if (ms < HOUR) return Math.round(ms / MIN) + " phút";
-  if (ms < DAY) return (ms / HOUR).toFixed(1).replace(".", ",") + " giờ";
+  if (ms < DAY) return num(ms / HOUR) + " giờ";
   const d = ms / DAY;
-  if (d < 30) return (d < 10 ? d.toFixed(1).replace(".", ",") : String(Math.round(d))) + " ngày";
+  if (d < 30) return num(d) + " ngày";
   if (d < 365) return Math.round(d / 30.4) + " tháng";
-  return (d / 365).toFixed(1).replace(".", ",") + " năm";
+  return num(d / 365) + " năm";
 }
 function previewLabel(c, rating){
   const now = Date.now();
@@ -540,11 +592,76 @@ function undo(){
 }
 
 /* ================= CHE DO / IN ================= */
+/* ================= DANH SACH CAU HOI ================= */
+let listQuery = "", listOpenAll = false, listPrintMode = false;
+function listFilter(c){
+  const q = listQuery.trim().toLowerCase();
+  if (!q) return true;
+  if (/^\d+$/.test(q)) return c.n === +q;   // go dung so cau -> mo chinh xac cau do
+  const hay = (c.n + " " + c.q + " " + c.o.join(" ") + " " + c.a).toLowerCase();
+  return hay.indexOf(q) >= 0;
+}
+function groupNums(id){
+  return CARDS.filter(function(c){
+    return ["s", "n", "t"].indexOf(id) >= 0 ? c.k.indexOf(id) >= 0 : c.t === id;
+  }).map(function(c){ return c.n; });
+}
+function renderToc(){
+  $("tocBody").innerHTML = META.filter(function(m){ return m.id !== "tatca"; }).map(function(m){
+    const ns = groupNums(m.id);
+    return '<div class="tocrow"><span class="toclbl">' + m.emoji + " " + m.label + " <b>(" + ns.length + ")</b></span>"
+      + '<span class="tocnums">' + ns.map(function(n){
+          return '<button class="tocnum" data-jump="' + n + '">' + n + '</button>';
+        }).join("") + "</span></div>";
+  }).join("");
+}
+function itemHTML(c){
+  const st = stateOf(c.n);
+  const cls = ["st0", "st1", "st2", "st3"][st.st];
+  const lbl = ["🆕 Mới", "🟠 Đang học", "🟢 Ôn tập", "🔴 Học lại"][st.st];
+  const t = META.find(function(x){ return x.id === c.t; });
+  let due;
+  if (st.st === 0) due = "chưa học lần nào";
+  else if (st.due <= Date.now()) due = '<b style="color:#dc2626">đến hạn ôn ngay</b>';
+  else due = "hẹn gặp lại sau <b>" + fmt(st.due - Date.now()) + "</b>";
+  const info = st.st === 0 ? "" : " · đã trả lời " + st.reps + " lần · quên " + st.lapses + " lần · hệ số dễ " + st.ease + "%";
+  return '<div class="item' + (listOpenAll ? " open" : "") + '" data-n="' + c.n + '">'
+    + '<div class="ihead">'
+      + '<span class="tag qn">Câu ' + c.n + '</span>'
+      + '<span class="tag ' + cls + '">' + lbl + '</span>'
+      + '<span class="iq">' + esc(c.q) + '</span>'
+      + '<span class="iarrow">▸</span>'
+    + '</div>'
+    + '<div class="ibody">'
+      + optionsHTML(c)
+      + answerHTML(c)
+      + '<div class="imeta">📅 ' + due + info + (t ? ' · ' + t.emoji + ' ' + t.label : '') + '</div>'
+    + '</div></div>';
+}
+function renderList(){
+  const all = pool();
+  const shown = all.filter(listFilter);
+  let nw = 0, learn = 0, rev = 0, rel = 0;
+  all.forEach(function(c){
+    const s = stateOf(c.n).st;
+    if (s === 0) nw++; else if (s === 1) learn++; else if (s === 2) rev++; else rel++;
+  });
+  const m = META.find(function(x){ return x.id === gid; });
+  $("listCount").innerHTML = (m ? m.emoji + " <b>" + m.label + "</b> — " : "")
+    + "<b>" + all.length + "</b> câu" + (shown.length !== all.length ? " (đang hiện " + shown.length + ")" : "")
+    + " · 🆕 " + nw + " mới · 🟠 " + learn + " đang học · 🟢 " + rev + " ôn tập · 🔴 " + rel + " học lại";
+  $("listView").innerHTML = shown.length
+    ? shown.map(itemHTML).join("")
+    : '<div class="item"><div class="ihead"><span class="iq">Không tìm thấy câu nào khớp từ khoá.</span></div></div>';
+  $("listExpand").textContent = listOpenAll ? "⬜ Thu gọn tất cả" : "☑️ Mở rộng tất cả";
+}
+
 function buildFree(){
   freeOrder = shuffle(pool());
   freePos = 0;
 }
 function refresh(){
+  if (mode === "list"){ renderList(); return; }
   if (mode === "free"){
     if (!freeOrder) buildFree();
     if (freePos >= freeOrder.length){
@@ -586,10 +703,34 @@ function jump(d){
 }
 function updatePrintInfo(n){
   if (n === undefined) n = pool().length;
+  if (mode === "list"){
+    $("printInfo").textContent = "🖨️ In danh sách " + n + " câu (tiếp tục trên các trang) — khổ A4, Scale 100%.";
+    return;
+  }
   const pages = Math.ceil(n / 6);
   $("printInfo").textContent = "🖨️ " + n + " thẻ → " + pages + " tờ giấy"
     + (currentPrint === "duplex" ? " (in 2 mặt = " + (pages * 2) + " trang)" : "")
     + " — chọn khổ A4, Margins: None, Scale 100%.";
+}
+function buildPrintList(){
+  const area = $("printArea");
+  area.innerHTML = "";
+  const cs = pool().filter(listFilter);
+  const m = META.find(function(x){ return x.id === gid; });
+  const d = document.createElement("div");
+  d.className = "listdoc";
+  d.innerHTML = '<div class="l-title">MLN131 — ' + (m ? m.emoji + " " + m.label : "") + ' (' + cs.length + ' câu) · đáp án in đậm xanh</div>'
+    + cs.map(function(c){
+        const lbl = ["Mới", "Đang học", "Ôn tập", "Học lại"][stateOf(c.n).st];
+        return '<div class="l-item">'
+          + '<div class="l-head">Câu ' + c.n + ' · ' + lbl + '</div>'
+          + '<div class="l-q">' + esc(c.q) + '</div>'
+          + c.o.map(function(t, i){ return '<div class="l-o">' + LETTER[i] + '. ' + esc(t) + '</div>'; }).join("")
+          + '<div class="l-a">Đáp án: ' + c.a.split("").join(" – ") + '</div>'
+          + '</div>';
+      }).join("");
+  area.appendChild(d);
+  updatePrintInfo(cs.length);
 }
 let currentPrint = "single";
 function cardFrontHTML(c){
@@ -644,11 +785,44 @@ function setMode(m){
   mode = m;
   $("tabSched").className = "tab" + (m === "sched" ? " on" : "");
   $("tabFree").className = "tab" + (m === "free" ? " on" : "");
+  $("tabList").className = "tab" + (m === "list" ? " on" : "");
+  const L = (m === "list");
+  $("listPanel").style.display = L ? "block" : "none";
+  $("scene").style.display = L ? "none" : "";
+  $("srs").style.display = L ? "none" : "";
+  $("mainControls").style.display = L ? "none" : "";
+  $("progBar").style.display = L ? "none" : "";
+  $("metaRow").style.display = L ? "none" : "";
   if (m === "free") buildFree();
   refresh();
 }
 $("tabSched").onclick = function(){ setMode("sched"); };
 $("tabFree").onclick = function(){ setMode("free"); };
+$("tabList").onclick = function(){ setMode("list"); };
+$("listSearch").oninput = function(){ listQuery = this.value; renderList(); };
+$("listExpand").onclick = function(){ listOpenAll = !listOpenAll; renderList(); };
+$("listPrint").onclick = function(){ buildPrintList(); window.print(); };
+$("listView").onclick = function(e){
+  const self = this;
+  let t = e.target;
+  while (t && t !== self){
+    if (t.className && String(t.className).indexOf("ihead") >= 0){
+      const p = t.parentNode;
+      p.className = String(p.className).indexOf("open") >= 0 ? "item" : "item open";
+      return;
+    }
+    t = t.parentNode;
+  }
+};
+$("tocBody").onclick = function(e){
+  const t = e.target;
+  if (t && t.getAttribute && t.getAttribute("data-jump")){
+    gid = "tatca"; listQuery = t.getAttribute("data-jump"); listOpenAll = false;
+    $("listSearch").value = listQuery;
+    chips(); refresh();
+  }
+};
+$("tocBox").addEventListener("toggle", function(){ if ($("tocBox").open) renderToc(); });
 $("card").onclick = function(){ $("card").classList.toggle("flip"); };
 $("bAgain").onclick = function(){ rate("again"); };
 $("bHard").onclick = function(){ rate("hard"); };
@@ -662,7 +836,7 @@ $("next").onclick = function(){ jump(1); };
 $("printSingle").onclick = function(){ buildPrint("single"); window.print(); };
 $("printDuplex").onclick = function(){ buildPrint("duplex"); window.print(); };
 $("edge").onchange = function(){ buildPrint(); };
-window.addEventListener("beforeprint", function(){ buildPrint(); });
+window.addEventListener("beforeprint", function(){ if (mode === "list") buildPrintList(); else buildPrint(); });
 
 function fillSettings(){
   $("sNewPerDay").value = S.newPerDay;
