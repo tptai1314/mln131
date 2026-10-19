@@ -21,7 +21,7 @@ Mở trực tiếp file `.html` bằng trình duyệt (Chạy offline, không c�
 - Theo dạng: 🔢 câu trả lời là **số** (15) · 🧑 câu **"ai – nói gì"** (19) · ⏱️ câu **thời gian/năm** (39)
 - Theo chủ đề: Gia đình – Hôn nhân (64) · Quá độ – Chủ nghĩa XH (64) · Dân chủ – Nhà nước (62) · Liên minh – Cách mạng – Đảng (58) · Giai cấp công nhân (48) · Dân tộc (35) · Tác phẩm – Tư tưởng (33) · Tôn giáo (32) · Kinh tế – Cơ cấu (23) · Câu trộn (22)
 
-Mặt trước: câu hỏi + đủ A B C D → mặt sau: đáp án **in xanh**. Trả lời xong bấm 1 trong 4 mức độ nhớ, mỗi nút ghi rõ **bao lâu nữa thẻ quay lại**:
+**Hai mặt giống hệt nhau** (câu hỏi + đủ A B C D) — mặt sau chỉ khác ở chỗ **đáp án đúng được tô xanh**, nên bạn đọc lại được cả câu lẫn các phương án gây nhiễu. Trả lời xong bấm 1 trong 4 mức độ nhớ, mỗi nút ghi rõ **bao lâu nữa thẻ quay lại**:
 
 | Nút | Thẻ mới | Thẻ đang ôn tập |
 |---|---|---|

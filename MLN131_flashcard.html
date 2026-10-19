@@ -51,10 +51,8 @@ h1{font-size:1.3rem;margin:4px 0 2px}
      background:#f8fafc;border:1px solid #eef2f7;color:#334155}
 .opt b{color:#64748b;margin-right:6px}
 .hint{color:var(--muted);font-size:.79rem;text-align:center;margin-top:auto;padding-top:10px}
-.ansbox{flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px}
-.anslabel{font-size:.76rem;font-weight:900;letter-spacing:1.4px;color:#3b82f6}
-.ansline{font-size:1.18rem;line-height:1.5;font-weight:800;color:var(--blue)}
-.ansline b{margin-right:6px}
+.opt.correct{background:#dbeafe;border-color:#93c5fd;color:var(--blue);font-weight:800}
+.opt.correct b{color:var(--blue)}
 .srs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
 .srsbtn{border:0;border-radius:12px;padding:11px 6px;color:#fff;font-weight:800;cursor:pointer;
         display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.2}
@@ -100,7 +98,6 @@ button.sm{padding:8px 11px;font-size:.84rem}
 .item.open .iarrow{transform:rotate(90deg)}
 .ibody{display:none;padding:0 12px 12px}
 .item.open .ibody{display:block;border-top:1px solid #eef2f7;padding-top:10px}
-.ibody .anslabel{margin-top:10px}
 .imeta{font-size:.76rem;color:var(--muted);margin-top:10px;line-height:1.6}
 .tocrow{display:flex;gap:10px;padding:6px 0;border-bottom:1px dashed #eef2f7;align-items:flex-start}
 .tocrow:last-child{border-bottom:0}
@@ -115,7 +112,7 @@ button.sm{padding:8px 11px;font-size:.84rem}
 #printArea{display:none}
 @media print{
   @page{size:A4;margin:0}
-  html,body{background:#fff!important}
+  html,body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body>*{display:none!important}
   #printArea{display:block!important}
   .sheet{width:210mm;height:296mm;display:grid;grid-template-columns:1fr 1fr;
@@ -127,12 +124,10 @@ button.sm{padding:8px 11px;font-size:.84rem}
   .p-q{font-size:10pt;font-weight:700;line-height:1.35;margin-bottom:3mm}
   .p-o{font-size:9pt;line-height:1.35;margin-bottom:1.4mm;color:#1e293b}
   .p-o b{color:#475569;margin-right:1.5mm}
-  .p-anslabel{font-size:7.6pt;font-weight:900;letter-spacing:1.4px;color:#2563eb;margin-bottom:2mm}
-  .p-a{font-size:11.5pt;font-weight:800;line-height:1.35;color:#1d4ed8;margin-bottom:2mm}
-  .p-a b{margin-right:1.5mm}
+  .p-o.ok{color:#1d4ed8;font-weight:800;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .slot.single .p-front{flex:1;display:flex;flex-direction:column}
   .p-cut{border-top:1px dashed #94a3b8;margin:3mm 0}
-  .p-back{display:flex;flex-direction:column;justify-content:center}
+  .p-back{display:flex;flex-direction:column}
   /* danh sach cau hoi in doc */
   .listdoc{padding:14mm 15mm;font-size:10pt;line-height:1.5}
   .l-title{font-size:13pt;font-weight:900;margin-bottom:4mm;border-bottom:1.2px solid #1e293b;padding-bottom:2mm}
@@ -171,7 +166,8 @@ button.sm{padding:8px 11px;font-size:.84rem}
       </div>
       <div class="face back">
         <div class="tagrow" id="bTags"></div>
-        <div class="ansbox" id="bAns"></div>
+        <div class="q" id="bQ"></div>
+        <div id="bOpts"></div>
         <div class="hint" id="bInfo"></div>
       </div>
     </div>
@@ -207,7 +203,7 @@ button.sm{padding:8px 11px;font-size:.84rem}
   </div>
 
   <div class="legend">
-    <b>Cách dùng:</b> đọc câu hỏi → tự trả lời → bấm thẻ để xem đáp án → chọn mức độ nhớ. App sẽ hẹn ngày gặp lại
+    <b>Cách dùng:</b> đọc câu hỏi → tự trả lời → bấm thẻ để xem đáp án tô xanh → chọn mức độ nhớ. App sẽ hẹn ngày gặp lại
     (nhớ càng chắc → càng lâu mới gặp lại).<br>
     <b>Công thức lặp lại:</b> thẻ mới đi qua <i>bước học</i> (mặc định 1 → 10 phút) rồi <i>tốt nghiệp</i> 1 ngày.
     Khi đã ở vòng ôn tập, mỗi lần trả lời: <b>Được</b> = khoảng cách × hệ số dễ · <b>Khó</b> = × 1,2 ·
@@ -249,10 +245,10 @@ button.sm{padding:8px 11px;font-size:.84rem}
   <div class="printbar">
     <div class="t">🖨️ In ra giấy (theo nhóm đang chọn)</div>
     <div style="font-size:.79rem;color:#64748b;margin:6px 0 10px">
-      In cả nhóm (không phụ thuộc lịch ôn). Mặt trước: câu hỏi + A B C D — Mặt sau: đáp án in xanh.
+      In cả nhóm (không phụ thuộc lịch ôn). Mặt trước: câu hỏi + A B C D — Mặt sau: y như vậy, chỉ khác đáp án được tô xanh.
     </div>
     <div class="controls" style="margin-bottom:0">
-      <button class="sm" id="printSingle">In 1 mặt (câu hỏi + đáp án xanh)</button>
+      <button class="sm" id="printSingle">In 1 mặt (2 nửa y như nhau, nửa dưới tô xanh đáp án)</button>
       <button class="sm" id="printDuplex">In 2 mặt (cắt thành thẻ)</button>
       <select id="edge" style="font:inherit;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:#fff">
         <option value="long">Máy in lật cạnh dài (long edge)</option>
@@ -467,11 +463,13 @@ function tagHTML(c){
     + '<span class="tag">' + (t ? t.emoji + " " + t.label : "") + '</span>';
 }
 function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]; }); }
-function optionsHTML(c){ return c.o.map(function(t, i){ return '<div class="opt"><b>' + LETTER[i] + '.</b>' + esc(t) + '</div>'; }).join(""); }
-function answerHTML(c){
-  return '<div class="anslabel">✅ Đáp án</div>' + c.a.split("").map(function(L){
-    return '<div class="ansline"><b>' + L + '.</b>' + esc(c.o[LETTER.indexOf(L)]) + '</div>'; }).join("");
+function optionsHTML(c, showAns){
+  return c.o.map(function(t, i){
+    const ok = showAns && c.a.indexOf(LETTER[i]) >= 0;
+    return '<div class="opt' + (ok ? " correct" : "") + '"><b>' + LETTER[i] + '.</b>' + esc(t) + '</div>';
+  }).join("");
 }
+function answerLetters(c){ return c.a.split("").join(" – "); }
 function statsHTML(){
   const p = pool();
   let nw = 0, learn = 0, due = 0, done = 0;
@@ -508,7 +506,7 @@ function renderDone(extra){
   $("fTags").innerHTML = ""; $("fOpts").innerHTML = "";
   $("fQ").innerHTML = '<div class="done"><div class="big">🎉</div><b>Hết thẻ đến hạn!</b>'
     + '<p>' + extra + '</p></div>';
-  $("bTags").innerHTML = ""; $("bAns").innerHTML = ""; $("bInfo").textContent = "";
+  $("bTags").innerHTML = ""; $("bOpts").innerHTML = ""; $("bQ").textContent = ""; $("bInfo").textContent = "";
   ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).disabled = true; });
   $("bar").style.width = "100%";
   $("mPos").textContent = "0 thẻ đến hạn";
@@ -539,7 +537,8 @@ function render(){
     $("fTags").innerHTML = tg; $("bTags").innerHTML = tg;
     $("fQ").textContent = card.q;
     $("fOpts").innerHTML = optionsHTML(card);
-    $("bAns").innerHTML = answerHTML(card);
+    $("bQ").textContent = card.q;
+    $("bOpts").innerHTML = optionsHTML(card, true);
     if (st.st === 0) $("bInfo").textContent = "Thẻ mới · chưa có hệ số dễ";
     else $("bInfo").textContent = "Đã trả lời " + st.reps + " lần · quên " + st.lapses + " lần · hệ số dễ "
       + st.ease + "% · khoảng cách " + (st.ivl >= 1 ? st.ivl + " ngày" : "trong buổi");
@@ -633,9 +632,9 @@ function itemHTML(c){
       + '<span class="iarrow">▸</span>'
     + '</div>'
     + '<div class="ibody">'
-      + optionsHTML(c)
-      + answerHTML(c)
-      + '<div class="imeta">📅 ' + due + info + (t ? ' · ' + t.emoji + ' ' + t.label : '') + '</div>'
+      + optionsHTML(c, true)
+      + '<div class="imeta">✅ Đáp án: <b style="color:#1d4ed8">' + answerLetters(c) + "</b> · 📅 " + due + info
+      + (t ? " · " + t.emoji + " " + t.label : "") + "</div>"
     + '</div></div>';
 }
 function renderList(){
@@ -688,7 +687,8 @@ function renderFree(card){
     $("fTags").innerHTML = tg; $("bTags").innerHTML = tg;
     $("fQ").textContent = card.q;
     $("fOpts").innerHTML = optionsHTML(card);
-    $("bAns").innerHTML = answerHTML(card);
+    $("bQ").textContent = card.q;
+    $("bOpts").innerHTML = optionsHTML(card, true);
     $("bInfo").textContent = "Chế độ tự do · chưa tính vào lịch ôn nếu bạn không cần";
     $("lAgain").textContent = previewLabel(st, "again");
     $("lHard").textContent  = previewLabel(st, "hard");
@@ -738,8 +738,11 @@ function cardFrontHTML(c){
     + '<div class="p-opts">' + c.o.map(function(t, i){ return '<div class="p-o"><b>' + LETTER[i] + '.</b>' + esc(t) + '</div>'; }).join("") + '</div>';
 }
 function cardBackHTML(c){
-  return '<div class="p-tag">CÂU ' + c.n + '</div><div class="p-anslabel">ĐÁP ÁN</div>'
-    + c.a.split("").map(function(L){ return '<div class="p-a"><b>' + L + '.</b>' + esc(c.o[LETTER.indexOf(L)]) + '</div>'; }).join("");
+  return '<div class="p-tag">CÂU ' + c.n + '</div><div class="p-q">' + esc(c.q) + '</div>'
+    + '<div class="p-opts">' + c.o.map(function(t, i){
+        const ok = c.a.indexOf(LETTER[i]) >= 0;
+        return '<div class="p-o' + (ok ? " ok" : "") + '"><b>' + LETTER[i] + '.</b>' + esc(t) + '</div>';
+      }).join("") + "</div>";
 }
 function buildPrint(m){
   if (m) currentPrint = m;
