@@ -3,67 +3,88 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MLN131 – Flashcard học thuộc theo nhóm</title>
+<title>MLN131 – Flashcard kiểu Anki (lặp lại ngắt quãng)</title>
 <style>
-:root{--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--brand:#2563eb;--ok:#16a34a;--bad:#dc2626;
-      --blue:#1d4ed8;--bg1:#eef2ff;--bg2:#f8fafc}
+:root{--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--brand:#2563eb;--blue:#1d4ed8;
+      --again:#dc2626;--hard:#d97706;--good:#16a34a;--easy:#2563eb}
 *{box-sizing:border-box}
 body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-     background:linear-gradient(160deg,var(--bg1),var(--bg2) 60%);color:var(--ink);min-height:100vh}
-.wrap{max-width:900px;margin:0 auto;padding:18px 16px 50px}
-h1{font-size:1.35rem;margin:4px 0 2px}
-.sub{color:var(--muted);font-size:.88rem;margin-bottom:14px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font-size:.86rem;
-      font-weight:600;cursor:pointer;transition:.12s;color:#334155}
+     background:linear-gradient(160deg,#eef2ff,#f8fafc 60%);color:var(--ink);min-height:100vh}
+.wrap{max-width:920px;margin:0 auto;padding:18px 16px 60px}
+h1{font-size:1.3rem;margin:4px 0 2px}
+.sub{color:var(--muted);font-size:.86rem;margin-bottom:12px}
+.tabs{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 14px;font-size:.86rem;
+     font-weight:700;color:#334155;cursor:pointer}
+.tab.on{background:#0f172a;border-color:#0f172a;color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:.82rem;
+      font-weight:600;cursor:pointer;color:#334155}
 .chip:hover{border-color:#93c5fd;color:var(--brand)}
 .chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
 .chip small{opacity:.75;font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;margin-bottom:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 11px}
+.stat b{display:block;font-size:1.15rem;line-height:1.15}
+.stat small{font-size:.72rem;color:var(--muted)}
+.stat.new b{color:#2563eb}.stat.learn b{color:#d97706}
+.stat.due b{color:#dc2626}.stat.done b{color:#16a34a}
 .bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-bottom:6px}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,#3b82f6,#22c55e);width:0;transition:.25s}
-.meta{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);margin-bottom:14px;
+.meta{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-bottom:12px;
       flex-wrap:wrap;gap:6px}
-.scene{perspective:1400px;margin-bottom:14px}
-.card{position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.2,.2,1);
+.scene{perspective:1400px;margin-bottom:12px}
+.card{position:relative;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.4,.2,.2,1);
       cursor:pointer;display:grid}
 .card.flip{transform:rotateY(180deg)}
-.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;
-      border-radius:18px;padding:20px;display:flex;flex-direction:column;min-height:250px;
-      box-shadow:0 10px 30px rgba(15,23,42,.10);border:1px solid var(--line);background:#fff}
-.back{transform:rotateY(180deg);background:#eff6ff;border-color:#bfdbfe;justify-content:center}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;
+      padding:20px;display:flex;flex-direction:column;min-height:250px;background:#fff;
+      box-shadow:0 10px 30px rgba(15,23,42,.10);border:1px solid var(--line)}
+.back{transform:rotateY(180deg);background:#eff6ff;border-color:#bfdbfe}
 .tagrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.tag{font-size:.72rem;font-weight:800;letter-spacing:.2px;background:#eef2ff;color:#1d4ed8;
-     border-radius:6px;padding:3px 8px}
+.tag{font-size:.71rem;font-weight:800;background:#eef2ff;color:#1d4ed8;border-radius:6px;padding:3px 8px}
 .tag.qn{background:#fee2e2;color:#991b1b}
-.q{font-size:1.04rem;line-height:1.55;font-weight:650;margin-bottom:12px}
-.opt{padding:8px 12px;border-radius:10px;margin-bottom:7px;font-size:.93rem;line-height:1.45;
+.tag.st0{background:#dbeafe;color:#1e40af}.tag.st1{background:#fef3c7;color:#92400e}
+.tag.st2{background:#dcfce7;color:#166534}.tag.st3{background:#ffe4e6;color:#9f1239}
+.q{font-size:1.03rem;line-height:1.55;font-weight:650;margin-bottom:12px}
+.opt{padding:8px 12px;border-radius:10px;margin-bottom:7px;font-size:.92rem;line-height:1.45;
      background:#f8fafc;border:1px solid #eef2f7;color:#334155}
 .opt b{color:#64748b;margin-right:6px}
-.hint{color:var(--muted);font-size:.8rem;text-align:center;margin-top:auto;padding-top:10px}
+.hint{color:var(--muted);font-size:.79rem;text-align:center;margin-top:auto;padding-top:10px}
 .ansbox{flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px}
-.anslabel{font-size:.78rem;font-weight:900;letter-spacing:1.5px;color:#3b82f6;text-transform:uppercase}
-.ansline{font-size:1.22rem;line-height:1.5;font-weight:800;color:var(--blue)}
+.anslabel{font-size:.76rem;font-weight:900;letter-spacing:1.4px;color:#3b82f6}
+.ansline{font-size:1.18rem;line-height:1.5;font-weight:800;color:var(--blue)}
 .ansline b{margin-right:6px}
+.srs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.srsbtn{border:0;border-radius:12px;padding:11px 6px;color:#fff;font-weight:800;cursor:pointer;
+        display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.2}
+.srsbtn small{font-weight:600;font-size:.74rem;opacity:.92}
+.srsbtn.again{background:var(--again)}.srsbtn.hard{background:var(--hard)}
+.srsbtn.good{background:var(--good)}.srsbtn.easy{background:var(--easy)}
+.srsbtn:hover{filter:brightness(1.09)}
+.srsbtn:disabled{background:#cbd5e1;cursor:not-allowed}
 .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
-button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:11px 15px;font-weight:700;
-       color:#fff;background:var(--brand);transition:.12s}
-button:hover{filter:brightness(1.08)}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:10px 14px;font-weight:700;
+       color:#fff;background:var(--brand)}
 button.ghost{background:#fff;color:#334155;border:1px solid var(--line)}
-button.ghost:hover{border-color:#93c5fd;color:var(--brand);filter:none}
-button.ok{background:var(--ok)}
-button.bad{background:var(--bad)}
-button.sm{padding:8px 11px;font-size:.85rem}
-.known{color:var(--blue);font-weight:800}
-.legend{font-size:.8rem;color:var(--muted);line-height:1.7}
+button.ghost:hover{border-color:#93c5fd;color:var(--brand)}
+button.sm{padding:8px 11px;font-size:.84rem}
+.legend{font-size:.79rem;color:var(--muted);line-height:1.75}
 .legend kbd{background:#fff;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;
-            padding:1px 6px;font-size:.78rem}
-.done{text-align:center;padding:34px 10px}
-.done .big{font-size:3rem}
-.printbar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:16px}
-.printbar .t{font-weight:800;font-size:.9rem;margin-bottom:8px}
-.printbar select{font:inherit;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:#fff}
-#printInfo{font-size:.8rem;color:var(--muted);margin-top:8px}
-@media(max-width:600px){.face{min-height:300px;padding:16px}.q{font-size:.99rem}}
+            padding:1px 6px;font-size:.77rem}
+.done{text-align:center;padding:20px 10px}
+.done .big{font-size:2.6rem;margin-bottom:6px}
+.done b{font-size:1.1rem}
+.done p{color:var(--muted);font-size:.9rem;line-height:1.6;margin:.6em 0 0}
+.settings,.printbar{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 15px;margin-top:14px}
+.settings summary,.printbar .t{font-weight:800;font-size:.9rem;cursor:pointer}
+.settings summary{cursor:pointer}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:12px 0}
+.field label{display:block;font-size:.78rem;color:var(--muted);font-weight:700;margin-bottom:3px}
+.field input{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff}
+#printInfo{font-size:.79rem;color:var(--muted);margin-top:8px}
+@media(max-width:600px){.face{min-height:300px;padding:16px}.q{font-size:.98rem}
+  .srs{grid-template-columns:repeat(2,1fr)}}
 
 /* ---------- vung chi de in ---------- */
 #printArea{display:none}
@@ -75,10 +96,9 @@ button.sm{padding:8px 11px;font-size:.85rem}
   .sheet{width:210mm;height:296mm;display:grid;grid-template-columns:1fr 1fr;
          grid-template-rows:repeat(3,1fr);page-break-after:always;break-after:page;overflow:hidden}
   .sheet:last-child{page-break-after:auto;break-after:auto}
-  .slot{padding:6mm 7mm;display:flex;flex-direction:column;overflow:hidden;
-        border:1px dashed #cbd5e1}
+  .slot{padding:6mm 7mm;display:flex;flex-direction:column;overflow:hidden;border:1px dashed #cbd5e1}
   .slot.empty{border-color:transparent}
-  .p-tag{font-size:7.6pt;font-weight:800;color:#b91c1c;letter-spacing:.3px;margin-bottom:2mm}
+  .p-tag{font-size:7.6pt;font-weight:800;color:#b91c1c;margin-bottom:2mm}
   .p-q{font-size:10pt;font-weight:700;line-height:1.35;margin-bottom:3mm}
   .p-o{font-size:9pt;line-height:1.35;margin-bottom:1.4mm;color:#1e293b}
   .p-o b{color:#475569;margin-right:1.5mm}
@@ -86,34 +106,26 @@ button.sm{padding:8px 11px;font-size:.85rem}
   .p-a{font-size:11.5pt;font-weight:800;line-height:1.35;color:#1d4ed8;margin-bottom:2mm}
   .p-a b{margin-right:1.5mm}
   .slot.single .p-front{flex:1;display:flex;flex-direction:column}
-  .p-cut{border-top:1px dashed #94a3b8;margin:3mm 0;position:relative}
-  .slot.single .p-back{flex:0 0 auto}
+  .p-cut{border-top:1px dashed #94a3b8;margin:3mm 0}
   .p-back{display:flex;flex-direction:column;justify-content:center}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>🎓 MLN131 – Flashcard học thuộc theo nhóm</h1>
-  <div class="sub">Mặt trước: câu hỏi + đủ A B C D • Mặt sau: <b style="color:#1d4ed8">đáp án in xanh</b></div>
+  <h1>🃏 MLN131 – Flashcard kiểu Anki</h1>
+  <div class="sub">Thuật toán lặp lại ngắt quãng (SM-2 như Anki): trả lời xong, app tự tính <b>bao lâu nữa thẻ quay lại</b>.</div>
+
+  <div class="tabs">
+    <button class="tab on" id="tabSched">🎯 Học hôm nay (theo lịch)</button>
+    <button class="tab" id="tabFree">📚 Học tự do</button>
+  </div>
 
   <div class="chips" id="chips"></div>
+  <div class="stats" id="stats"></div>
 
   <div class="bar"><i id="bar"></i></div>
-  <div class="meta">
-    <span id="mPos">—</span>
-    <span id="mStat"></span>
-  </div>
-
-  <div class="controls">
-    <button class="ghost sm" id="prev">◀ Trước</button>
-    <button class="ghost sm" id="next">Sau ▶</button>
-    <button class="ghost sm" id="shuf">🔀 Trộn</button>
-    <button class="ghost sm" id="onlyKnown">🎓 Chỉ câu chưa thuộc</button>
-    <button class="ok sm" id="markOk">✅ Đã thuộc</button>
-    <button class="bad sm" id="markNo">🔁 Chưa thuộc</button>
-    <button class="ghost sm" id="resetKnown">Xóa đánh dấu</button>
-  </div>
+  <div class="meta"><span id="mPos">—</span><span id="mStat"></span></div>
 
   <div class="scene">
     <div class="card" id="card">
@@ -121,28 +133,67 @@ button.sm{padding:8px 11px;font-size:.85rem}
         <div class="tagrow" id="fTags"></div>
         <div class="q" id="fQ"></div>
         <div id="fOpts"></div>
-        <div class="hint">💡 Bấm vào thẻ (hoặc phím <b>Space</b>) để xem đáp án</div>
+        <div class="hint">💡 Bấm thẻ (hoặc <b>Space</b>) để xem đáp án rồi chọn mức độ nhớ</div>
       </div>
       <div class="face back">
         <div class="tagrow" id="bTags"></div>
         <div class="ansbox" id="bAns"></div>
-        <div class="hint">← → để chuyển câu</div>
+        <div class="hint" id="bInfo"></div>
       </div>
     </div>
   </div>
 
-  <div class="legend">
-    <b>Phím tắt:</b> <kbd>Space</kbd> lật thẻ • <kbd>←</kbd> <kbd>→</kbd> chuyển câu •
-    <kbd>1</kbd> chưa thuộc • <kbd>2</kbd> đã thuộc • <kbd>S</kbd> trộn<br>
-    Đánh dấu lưu trên máy (localStorage), đóng tab mở lại vẫn còn.
+  <div class="srs" id="srs">
+    <button class="srsbtn again" id="bAgain"><span>Lại</span><small id="lAgain">1 phút</small></button>
+    <button class="srsbtn hard"  id="bHard"><span>Khó</span><small id="lHard">6 phút</small></button>
+    <button class="srsbtn good"  id="bGood"><span>Được</span><small id="lGood">10 phút</small></button>
+    <button class="srsbtn easy"  id="bEasy"><span>Dễ</span><small id="lEasy">4 ngày</small></button>
   </div>
 
+  <div class="controls">
+    <button class="ghost sm" id="undo">↶ Hoàn tác</button>
+    <button class="ghost sm" id="shuf">🔀 Trộn</button>
+    <button class="ghost sm" id="checkNow">🔄 Kiểm tra thẻ đến hạn</button>
+    <button class="ghost sm" id="prev">◀ Trước</button>
+    <button class="ghost sm" id="next">Sau ▶</button>
+  </div>
+
+  <div class="legend">
+    <b>Cách dùng:</b> đọc câu hỏi → tự trả lời → bấm thẻ để xem đáp án → chọn mức độ nhớ. App sẽ hẹn ngày gặp lại
+    (nhớ càng chắc → càng lâu mới gặp lại).<br>
+    <b>Phím tắt:</b> <kbd>Space</kbd> lật thẻ · <kbd>1</kbd> Lại · <kbd>2</kbd> Khó · <kbd>3</kbd> Được · <kbd>4</kbd> Dễ ·
+    <kbd>←</kbd> <kbd>→</kbd> xem trước/sau · <kbd>Z</kbd> hoàn tác · <kbd>S</kbd> trộn<br>
+    Tiến độ lưu trên máy (localStorage) — đóng tab mở lại vẫn còn nguyên lịch ôn.
+  </div>
+
+  <details class="settings">
+    <summary>⚙️ Cài đặt thuật toán</summary>
+    <div class="fields">
+      <div class="field"><label>Thẻ mới mỗi ngày</label><input id="sNewPerDay" type="number" min="0"></div>
+      <div class="field"><label>Bước học (phút, cách nhau dấu cách)</label><input id="sLearnSteps" type="text"></div>
+      <div class="field"><label>Bước học lại sau khi quên (phút)</label><input id="sRelearnSteps" type="text"></div>
+      <div class="field"><label>Khoảng cách khi tốt nghiệp (ngày)</label><input id="sGraduate" type="number" step="0.5" min="0.5"></div>
+      <div class="field"><label>Khoảng cách nút "Dễ" cho thẻ mới (ngày)</label><input id="sEasyIvl" type="number" step="0.5" min="0.5"></div>
+      <div class="field"><label>Hệ số dễ ban đầu (%)</label><input id="sStartEase" type="number" min="130" max="500"></div>
+    </div>
+    <div class="controls" style="margin-bottom:0">
+      <button class="sm" id="saveSettings">Lưu cài đặt</button>
+      <button class="ghost sm" id="resetGroup">Xoá tiến độ nhóm này</button>
+      <button class="ghost sm" id="resetAll">Xoá toàn bộ tiến độ</button>
+      <button class="ghost sm" id="exportDb">📤 Xuất tiến độ</button>
+    </div>
+    <div id="setMsg" class="legend" style="margin-top:8px"></div>
+  </details>
+
   <div class="printbar">
-    <div class="t">🖨️ In ra giấy (in theo nhóm đang chọn)</div>
+    <div class="t">🖨️ In ra giấy (theo nhóm đang chọn)</div>
+    <div style="font-size:.79rem;color:#64748b;margin:6px 0 10px">
+      In cả nhóm (không phụ thuộc lịch ôn). Mặt trước: câu hỏi + A B C D — Mặt sau: đáp án in xanh.
+    </div>
     <div class="controls" style="margin-bottom:0">
       <button class="sm" id="printSingle">In 1 mặt (câu hỏi + đáp án xanh)</button>
       <button class="sm" id="printDuplex">In 2 mặt (cắt thành thẻ)</button>
-      <select id="edge">
+      <select id="edge" style="font:inherit;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:#fff">
         <option value="long">Máy in lật cạnh dài (long edge)</option>
         <option value="short">Máy in lật cạnh ngắn (short edge)</option>
       </select>
@@ -159,200 +210,474 @@ const CARDS = DATA.cards, META = DATA.meta;
 const LETTER = ["A","B","C","D"];
 const $ = id => document.getElementById(id);
 
-let order = [], pos = 0, gid = "tatca", onlyUnknown = false, known = load();
-let printMode = "single";
+const MIN = 60000, HOUR = 3600000, DAY = 86400000;
+const DEF = { newPerDay: 20, learnSteps: [1, 10], relearnSteps: [10], graduate: 1, easyIvl: 4,
+              startEase: 250, easyBonus: 1.3, hardMult: 1.2, lapseEase: -20, hardEase: -15,
+              easyEase: 15, minEase: 130, maxIvl: 36500, ivlMod: 1.0 };
 
-function load(){
-  try { return new Set((localStorage.getItem("mln131Known")||"").split(",").filter(Boolean).map(Number)); }
-  catch(e){ return new Set(); }
+let S = loadJSON("mln131srsCfg", null) || JSON.parse(JSON.stringify(DEF));
+let DB = loadJSON("mln131srsDb", null) || {};
+let DAYMETA = loadJSON("mln131srsDay", null) || { day: "", newDone: 0 };
+migrateOld();
+
+let gid = "tatca", mode = "sched", freeOrder = null, freePos = 0, undoStack = [], cur = null, tick = null;
+
+function loadJSON(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }
+function saveJSON(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+function today(){ const d = new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function migrateOld(){
+  try {
+    const old = localStorage.getItem("mln131Known");
+    if (!old || Object.keys(DB).length) return;
+    const now = Date.now();
+    old.split(",").filter(Boolean).forEach(function(x){
+      DB[+x] = { st: 2, due: now, ivl: 4, ease: S.startEase, step: 0, reps: 1, lapses: 0 };
+    });
+    saveJSON("mln131srsDb", DB);
+    localStorage.removeItem("mln131Known");
+  } catch(e){}
 }
-function save(){ try{ localStorage.setItem("mln131Known", [...known].join(",")); }catch(e){} }
-
-function listFor(){
-  let l = CARDS.filter(c => gid==="tatca" ? true
-                 : (["s","n","t"].includes(gid) ? c.k.includes(gid) : c.t===gid));
-  if(onlyUnknown) l = l.filter(c => !known.has(c.n));
-  return l;
+function rollDay(){
+  const t = today();
+  if (DAYMETA.day !== t){ DAYMETA = { day: t, newDone: 0 }; saveJSON("mln131srsDay", DAYMETA); }
 }
-function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
-function buildOrder(reshuffle){
-  let l = listFor();
-  order = reshuffle ? shuffle(l) : l;
-  pos = 0;
-  render(); updatePrintInfo();
+/* ================= THUAT TOAN SM-2 (giong Anki) ================= */
+function fresh(){ return { st: 0, due: 0, ivl: 0, ease: S.startEase, step: 0, reps: 0, lapses: 0 }; }
+function stateOf(n){ return DB[n] || fresh(); }
+
+function schedule(c0, rating, now){
+  const c = {
+    st: c0.st, due: c0.due || 0, ivl: c0.ivl || 0,
+    ease: c0.ease || S.startEase, step: c0.step || 0,
+    reps: (c0.reps || 0) + 1, lapses: c0.lapses || 0
+  };
+  const easeUp = function(v){ return v + (S.easyEase || 15); };
+  const easeDn = function(v, k){ return Math.max(S.minEase, v + (k || S.lapseEase)); };
+  const cap = function(d){ return Math.min(S.maxIvl, Math.max(1, Math.round(d))); };
+
+  if (rating === "again"){
+    if (c.st === 2){                                   // the dang on tap -> quen
+      c.ease = easeDn(c.ease, S.lapseEase);
+      c.lapses++;
+      c.st = 3; c.step = 0; c.ivl = 0;
+      c.due = now + (S.relearnSteps[0] || 10) * MIN;
+    } else {
+      c.st = 1; c.step = 0; c.ivl = 0;
+      c.due = now + (S.learnSteps[0] || 1) * MIN;
+    }
+  } else if (rating === "hard"){
+    if (c.st === 2){
+      c.ease = easeDn(c.ease, S.hardEase);
+      c.ivl = cap(c.ivl * S.hardMult);
+      c.st = 2; c.due = now + c.ivl * DAY;
+    } else if (c.st === 3){
+      c.st = 3; c.step = 0; c.ivl = 0;
+      c.due = now + (S.relearnSteps[0] || 10) * MIN;
+    } else {
+      const s = Math.min(c.step, S.learnSteps.length - 1);
+      const mins = Math.max(S.learnSteps[s], Math.round(S.learnSteps[s] * 1.5));
+      c.st = 1; c.step = s; c.ivl = 0;
+      c.due = now + mins * MIN;
+    }
+  } else if (rating === "good"){
+    if (c.st === 2){
+      c.ivl = cap(c.ivl * (c.ease / 100) * S.ivlMod);
+      c.st = 2; c.due = now + c.ivl * DAY;
+    } else if (c.st === 3){
+      const s = c.step + 1;
+      if (s >= S.relearnSteps.length){
+        c.st = 2; c.ivl = cap(S.graduate); c.due = now + c.ivl * DAY;
+      } else {
+        c.st = 3; c.step = s; c.ivl = 0;
+        c.due = now + S.relearnSteps[s] * MIN;
+      }
+    } else {
+      const s = c.step + 1;
+      if (s >= S.learnSteps.length){
+        c.st = 2; c.ivl = cap(S.graduate); c.due = now + c.ivl * DAY;
+      } else {
+        c.st = 1; c.step = s; c.ivl = 0;
+        c.due = now + S.learnSteps[s] * MIN;
+      }
+    }
+  } else {                                             // easy
+    if (c.st === 2){
+      c.ivl = cap(c.ivl * (c.ease / 100) * S.easyBonus * S.ivlMod);
+      c.ease = easeUp(c.ease);
+      c.st = 2; c.due = now + c.ivl * DAY;
+    } else {
+      c.ivl = cap(c.st === 3 ? S.graduate : Math.max(S.easyIvl, S.graduate));
+      c.ease = easeUp(c.ease);
+      c.st = 2; c.due = now + c.ivl * DAY;
+    }
+  }
+  return c;
+}
+
+function fmt(ms){
+  if (ms < MIN) return "dưới 1 phút";
+  if (ms < HOUR) return Math.round(ms / MIN) + " phút";
+  if (ms < DAY) { const h = ms / HOUR; return (h < 10 ? h.toFixed(h < 2 ? 1 : 0) : Math.round(h)) + " giờ"; }
+  const d = ms / DAY;
+  if (d < 30) return (d < 10 ? d.toFixed(d < 2 ? 1 : 0) : Math.round(d)) + " ngày";
+  if (d < 365) return Math.round(d / 30.4) + " tháng";
+  return (d / 365).toFixed(1) + " năm";
+}
+function previewLabel(c, rating){
+  const now = Date.now();
+  const n = schedule(c, rating, now);
+  return (n.st === 2 ? fmt(n.ivl * DAY) : fmt(n.due - now));
+}
+
+/* ================= NHOM / NGAY ================= */
+function inGroup(c){ return gid === "tatca" ? true : (["s","n","t"].indexOf(gid) >= 0 ? c.k.indexOf(gid) >= 0 : c.t === gid); }
+function pool(){ return CARDS.filter(inGroup); }
+function countNewToday(){
+  rollDay();
+  return pool().filter(function(c){ const s = DB[c.n]; return !s || s.st === 0; }).length;
+}
+function newRemaining(){
+  rollDay();
+  return Math.max(0, (S.newPerDay | 0) - DAYMETA.newDone);
+}
+function shuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+function pickNext(){
+  const now = Date.now();
+  const p = pool();
+  const due = function(states, from){
+    const c = p.filter(function(x){ const s = DB[x.n]; return s && states.indexOf(s.st) >= 0 && s.due <= from; });
+    c.sort(function(a, b){ return DB[a.n].due - DB[b.n].due; });
+    return c[0] || null;
+  };
+  const learn = due([1, 3], now); if (learn) return learn;
+  const rev = due([2], now);      if (rev) return rev;
+  if (newRemaining() > 0){ const nw = p.filter(function(x){ const s = DB[x.n]; return !s || s.st === 0; }); if (nw.length) return nw[0]; }
+  return null;
+}
+function nextDueInfo(){
+  const now = Date.now();
+  const up = pool().map(function(x){ return DB[x.n]; }).filter(function(s){ return s && s.st !== 0 && s.due > now; });
+  if (!up.length) return null;
+  up.sort(function(a, b){ return a.due - b.due; });
+  return { in: up[0].due - now, n: up.length };
+}
+
+/* ================= RENDER ================= */
+function tagHTML(c){
+  const st = stateOf(c.n).st;
+  const lbl = ["🆕 Mới", "🟠 Đang học", "🟢 Ôn tập", "🔴 Học lại"][st];
+  const t = META.find(function(x){ return x.id === c.t; });
+  return '<span class="tag qn">Câu ' + c.n + '</span><span class="tag st' + st + '">' + lbl + '</span>'
+    + (c.k.indexOf("s") >= 0 ? '<span class="tag">🔢 SỐ</span>' : '')
+    + (c.k.indexOf("n") >= 0 ? '<span class="tag">🧑 AI</span>' : '')
+    + (c.k.indexOf("t") >= 0 ? '<span class="tag">⏱️ THỜI GIAN</span>' : '')
+    + '<span class="tag">' + (t ? t.emoji + " " + t.label : "") + '</span>';
+}
+function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]; }); }
+function optionsHTML(c){ return c.o.map(function(t, i){ return '<div class="opt"><b>' + LETTER[i] + '.</b>' + esc(t) + '</div>'; }).join(""); }
+function answerHTML(c){
+  return '<div class="anslabel">✅ Đáp án</div>' + c.a.split("").map(function(L){
+    return '<div class="ansline"><b>' + L + '.</b>' + esc(c.o[LETTER.indexOf(L)]) + '</div>'; }).join("");
+}
+function statsHTML(){
+  const p = pool();
+  let nw = 0, learn = 0, due = 0, done = 0;
+  const now = Date.now();
+  p.forEach(function(c){
+    const s = DB[c.n];
+    if (!s || s.st === 0) nw++;
+    else if (s.st === 1 || s.st === 3) learn++;
+    else if (s.st === 2){ if (s.due <= now) due++; else done++; }
+  });
+  return '<div class="stat new"><b>' + nw + '</b><small>Chưa học</small></div>'
+       + '<div class="stat learn"><b>' + learn + '</b><small>Đang học</small></div>'
+       + '<div class="stat due"><b>' + due + '</b><small>Cần ôn hôm nay</small></div>'
+       + '<div class="stat done"><b>' + done + '</b><small>Đã hẹn ngày</small></div>';
 }
 function chips(){
-  const box = $("chips"); box.innerHTML="";
-  META.forEach(m=>{
+  const box = $("chips"); box.innerHTML = "";
+  META.forEach(function(m){
     const b = document.createElement("button");
-    b.className = "chip" + (m.id===gid ? " on":"");
-    b.innerHTML = m.emoji+" "+m.label+' <small>'+m.count+'</small>';
-    b.onclick = ()=>{ gid = m.id; chips(); buildOrder(false); };
+    b.className = "chip" + (m.id === gid ? " on" : "");
+    b.innerHTML = m.emoji + " " + m.label + ' <small>' + m.count + '</small>';
+    b.onclick = function(){ gid = m.id; freeOrder = null; chips(); refresh(); };
     box.appendChild(b);
   });
 }
-function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
-function tagHTML(c){
-  const t = META.find(x=>x.id===c.t);
-  return '<span class="tag qn">Câu '+c.n+'</span>'
-    + (c.k.includes("s")?'<span class="tag">🔢 SỐ</span>':'')
-    + (c.k.includes("n")?'<span class="tag">🧑 AI</span>':'')
-    + (c.k.includes("t")?'<span class="tag">⏱️ THỜI GIAN</span>':'')
-    + '<span class="tag">'+(t?t.emoji+" "+t.label:"")+'</span>';
+function renderDone(extra){
+  $("card").classList.remove("flip");
+  $("fTags").innerHTML = ""; $("fOpts").innerHTML = "";
+  $("fQ").innerHTML = '<div class="done"><div class="big">🎉</div><b>Hết thẻ đến hạn!</b>'
+    + '<p>' + extra + '</p></div>';
+  $("bTags").innerHTML = ""; $("bAns").innerHTML = ""; $("bInfo").textContent = "";
+  ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).disabled = true; });
+  $("bar").style.width = "100%";
+  $("mPos").textContent = "0 thẻ đến hạn";
+  $("mStat").textContent = "";
 }
-function optionsHTML(c){
-  return c.o.map((t,i)=>'<div class="opt"><b>'+LETTER[i]+'.</b>'+esc(t)+'</div>').join("");
-}
-function answerHTML(c){
-  return '<div class="anslabel">✅ Đáp án</div>'
-    + c.a.split("").map(L=>'<div class="ansline"><b>'+L+'.</b>'+esc(c.o[LETTER.indexOf(L)])+'</div>').join("");
-}
-
 function render(){
-  const c = order[pos];
-  if(!c){
-    $("card").classList.remove("flip");
-    $("fTags").innerHTML=""; $("fOpts").innerHTML="";
-    $("fQ").innerHTML = '<div class="done"><div class="big">🎉</div><b>Hết nhóm này!</b><br>'
-      + '<span style="color:#64748b">Chọn nhóm khác, bấm "Trộn" hoặc bỏ lọc "chưa thuộc".</span></div>';
-    $("bTags").innerHTML=""; $("bAns").innerHTML="";
-    $("mPos").textContent = "0/0"; $("mStat").textContent="";
-    $("bar").style.width="100%";
+  rollDay();
+  $("stats").innerHTML = statsHTML();
+  const card = pickNext();
+  cur = card;
+  if (!card){
+    ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).disabled = true; });
+    const inf = nextDueInfo();
+    const p = pool();
+    const nwLeft = p.filter(function(c){ const s = DB[c.n]; return !s || s.st === 0; }).length;
+    let ex = "Nhóm này không còn thẻ nào cần học lúc này.";
+    if (inf) ex = "Còn <b>" + inf.n + "</b> thẻ chưa đến hạn — thẻ gần nhất sau <b>" + fmt(inf.in) + "</b>.<br>Mai quay lại nhé, hoặc bấm 🔄 để kiểm tra lại.";
+    else if (nwLeft) ex = "Còn <b>" + nwLeft + "</b> thẻ mới, nhưng bạn đã đạt giới hạn <b>" + S.newPerDay + "</b> thẻ mới hôm nay.<br>Tăng giới hạn trong ⚙️ Cài đặt hoặc bấm 📚 Học tự do.";
+    renderDone(ex);
     return;
   }
+  ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).disabled = false; });
+  const st = stateOf(card.n);
   $("card").classList.remove("flip");
-  setTimeout(()=>{
-    const tg = tagHTML(c);
+  setTimeout(function(){
+    const tg = tagHTML(card);
     $("fTags").innerHTML = tg; $("bTags").innerHTML = tg;
-    $("fQ").textContent = c.q;
-    $("fOpts").innerHTML = optionsHTML(c);
-    $("bAns").innerHTML = answerHTML(c);
-  }, 120);
+    $("fQ").textContent = card.q;
+    $("fOpts").innerHTML = optionsHTML(card);
+    $("bAns").innerHTML = answerHTML(card);
+    if (st.st === 0) $("bInfo").textContent = "Thẻ mới · chưa có hệ số dễ";
+    else $("bInfo").textContent = "Đã trả lời " + st.reps + " lần · quên " + st.lapses + " lần · hệ số dễ "
+      + st.ease + "% · khoảng cách " + (st.ivl >= 1 ? st.ivl + " ngày" : "trong buổi");
+    $("lAgain").textContent = previewLabel(st, "again");
+    $("lHard").textContent  = previewLabel(st, "hard");
+    $("lGood").textContent  = previewLabel(st, "good");
+    $("lEasy").textContent  = previewLabel(st, "easy");
+  }, 80);
 
-  const m = META.find(x=>x.id===gid);
-  $("mPos").textContent = (pos+1)+"/"+order.length+" • "+(m?m.emoji+" "+m.label:"");
-  const kCount = order.filter(x=>known.has(x.n)).length;
-  $("mStat").innerHTML = "Đã thuộc: <b>"+kCount+"/"+order.length+"</b>";
-  $("bar").style.width = ((pos+1)/order.length*100)+"%";
+  const m = META.find(function(x){ return x.id === gid; });
+  const total = pool().length;
+  if (mode === "free"){
+    $("mPos").textContent = "Thẻ " + (freePos + 1) + "/" + total + " • 📚 Học tự do";
+    $("mStat").innerHTML = (m ? m.emoji + " " + m.label : "");
+    $("bar").style.width = ((freePos + 1) / total * 100) + "%";
+  } else {
+    const doneToday = Math.max(0, DAYMETA.newDone);
+    $("mPos").textContent = "🎯 Học hôm nay • " + (m ? m.emoji + " " + m.label : "") + " • " + pool().length + " thẻ";
+    $("mStat").innerHTML = "Thẻ mới hôm nay: <b>" + doneToday + "/" + S.newPerDay + "</b>";
+    const inf = nextDueInfo();
+    $("bar").style.width = (inf ? Math.max(4, 100 - Math.min(100, inf.n / Math.max(1, total) * 100)) : 100) + "%";
+  }
 }
 
-function go(d){ if(!order.length) return; pos = Math.min(order.length-1, Math.max(0, pos+d)); render(); }
-function flip(){ $("card").classList.toggle("flip"); }
-function mark(v){
-  const c = order[pos]; if(!c) return;
-  if(v) known.add(c.n); else known.delete(c.n);
-  save();
-  if(onlyUnknown && v){ buildOrder(true); return; }
-  render(); go(1);
+/* ================= TRA LOI ================= */
+function rate(rating){
+  if (!cur) return;
+  const now = Date.now();
+  const before = DB[cur.n] ? JSON.parse(JSON.stringify(DB[cur.n])) : null;
+  const st = stateOf(cur.n);
+  const wasNew = st.st === 0;
+  const nxt = schedule(st, rating, now);
+  DB[cur.n] = nxt;
+  rollDay();
+  if (wasNew) DAYMETA.newDone = (DAYMETA.newDone || 0) + 1;
+  undoStack.push({ n: cur.n, before: before, dayBefore: DAYMETA.newDone - (wasNew ? 1 : 0) });
+  if (undoStack.length > 200) undoStack.shift();
+  saveJSON("mln131srsDb", DB); saveJSON("mln131srsDay", DAYMETA);
+  if (mode === "free") freePos++;
+  refresh();
+}
+function undo(){
+  const u = undoStack.pop();
+  if (!u) return;
+  if (u.before) DB[u.n] = u.before; else delete DB[u.n];
+  DAYMETA.newDone = u.dayBefore;
+  saveJSON("mln131srsDb", DB); saveJSON("mln131srsDay", DAYMETA);
+  if (mode === "free" && freePos > 0) freePos--;
+  refresh();
 }
 
-/* ---------------- IN ---------------- */
+/* ================= CHE DO / IN ================= */
+function buildFree(){
+  freeOrder = shuffle(pool());
+  freePos = 0;
+}
+function refresh(){
+  if (mode === "free"){
+    if (!freeOrder) buildFree();
+    if (freePos >= freeOrder.length){
+      $("stats").innerHTML = statsHTML();
+      ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).disabled = true; });
+      renderDone("Bạn đã đi hết <b>" + freeOrder.length + "</b> thẻ của nhóm này (chế độ học tự do).<br>Bấm 🔀 Trộn để làm vòng mới, hoặc đổi sang 🎯 Học hôm nay.");
+      return;
+    }
+    const card = freeOrder[freePos];
+    renderFree(card);
+    return;
+  }
+  render();
+}
+function renderFree(card){
+  rollDay();
+  $("stats").innerHTML = statsHTML();
+  cur = card;
+  ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).disabled = false; });
+  const st = stateOf(card.n);
+  $("card").classList.remove("flip");
+  setTimeout(function(){
+    const tg = tagHTML(card);
+    $("fTags").innerHTML = tg; $("bTags").innerHTML = tg;
+    $("fQ").textContent = card.q;
+    $("fOpts").innerHTML = optionsHTML(card);
+    $("bAns").innerHTML = answerHTML(card);
+    $("bInfo").textContent = "Chế độ tự do · chưa tính vào lịch ôn nếu bạn không cần";
+    $("lAgain").textContent = previewLabel(st, "again");
+    $("lHard").textContent  = previewLabel(st, "hard");
+    $("lGood").textContent  = previewLabel(st, "good");
+    $("lEasy").textContent  = previewLabel(st, "easy");
+  }, 80);
+}
+function jump(d){
+  if (mode !== "free") return;
+  freePos = Math.min(freeOrder.length - 1, Math.max(0, freePos + d));
+  refresh();
+}
+function updatePrintInfo(n){
+  if (n === undefined) n = pool().length;
+  const pages = Math.ceil(n / 6);
+  $("printInfo").textContent = "🖨️ " + n + " thẻ → " + pages + " tờ giấy"
+    + (currentPrint === "duplex" ? " (in 2 mặt = " + (pages * 2) + " trang)" : "")
+    + " — chọn khổ A4, Margins: None, Scale 100%.";
+}
+let currentPrint = "single";
 function cardFrontHTML(c){
-  return '<div class="p-tag">CÂU '+c.n+'</div>'
-       + '<div class="p-q">'+esc(c.q)+'</div>'
-       + '<div class="p-opts">'+c.o.map((t,i)=>'<div class="p-o"><b>'+LETTER[i]+'.</b>'+esc(t)+'</div>').join("")+'</div>';
+  return '<div class="p-tag">CÂU ' + c.n + '</div><div class="p-q">' + esc(c.q) + '</div>'
+    + '<div class="p-opts">' + c.o.map(function(t, i){ return '<div class="p-o"><b>' + LETTER[i] + '.</b>' + esc(t) + '</div>'; }).join("") + '</div>';
 }
 function cardBackHTML(c){
-  return '<div class="p-tag">CÂU '+c.n+'</div>'
-       + '<div class="p-anslabel">ĐÁP ÁN</div>'
-       + c.a.split("").map(L=>'<div class="p-a"><b>'+L+'.</b>'+esc(c.o[LETTER.indexOf(L)])+'</div>').join("");
+  return '<div class="p-tag">CÂU ' + c.n + '</div><div class="p-anslabel">ĐÁP ÁN</div>'
+    + c.a.split("").map(function(L){ return '<div class="p-a"><b>' + L + '.</b>' + esc(c.o[LETTER.indexOf(L)]) + '</div>'; }).join("");
 }
-function chunk6(a){ const r=[]; for(let i=0;i<a.length;i+=6) r.push(a.slice(i,i+6)); return r; }
-
-function buildPrint(mode){
-  if(mode) printMode = mode;
+function buildPrint(m){
+  if (m) currentPrint = m;
   const area = $("printArea");
   area.innerHTML = "";
-  let cs = listFor();
-  if(!cs.length) cs = CARDS.slice();
+  const cs = pool();
   const edge = $("edge").value;
-  const sheets = chunk6(cs);
-
-  sheets.forEach(chunk=>{
-    if(printMode === "single"){
+  for (let i = 0; i < cs.length; i += 6){
+    const chunk = cs.slice(i, i + 6);
+    if (currentPrint === "single"){
       const sh = document.createElement("div"); sh.className = "sheet";
-      chunk.forEach(c=>{
+      chunk.forEach(function(c){
         const s = document.createElement("div"); s.className = "slot single";
-        s.innerHTML = '<div class="p-front">'+cardFrontHTML(c)+'</div>'
-                    + '<div class="p-cut"></div>'
-                    + '<div class="p-back">'+cardBackHTML(c)+'</div>';
+        s.innerHTML = '<div class="p-front">' + cardFrontHTML(c) + '</div><div class="p-cut"></div>'
+                    + '<div class="p-back">' + cardBackHTML(c) + '</div>';
         sh.appendChild(s);
       });
       area.appendChild(sh);
-      return;
+      continue;
     }
-    // 2 mat: to truoc
     const front = document.createElement("div"); front.className = "sheet";
-    chunk.forEach(c=>{
-      const s = document.createElement("div"); s.className = "slot";
-      s.innerHTML = cardFrontHTML(c);
-      front.appendChild(s);
-    });
-    while(front.children.length < 6){
-      const s = document.createElement("div"); s.className = "slot empty"; front.appendChild(s);
-    }
+    chunk.forEach(function(c){ const s = document.createElement("div"); s.className = "slot"; s.innerHTML = cardFrontHTML(c); front.appendChild(s); });
+    while (front.children.length < 6){ const s = document.createElement("div"); s.className = "slot empty"; front.appendChild(s); }
     area.appendChild(front);
 
-    // to sau (doi cho khop khi lat giay)
     let back = chunk.slice();
-    while(back.length < 6) back.push(null);
-    if(edge === "long"){
-      for(let r=0;r<3;r++){ const t=back[r*2]; back[r*2]=back[r*2+1]; back[r*2+1]=t; }
-    } else {
-      back = [back[4],back[5],back[2],back[3],back[0],back[1]];
-    }
+    while (back.length < 6) back.push(null);
+    if (edge === "long"){ for (let r = 0; r < 3; r++){ const t = back[r*2]; back[r*2] = back[r*2+1]; back[r*2+1] = t; } }
+    else { back = [back[4], back[5], back[2], back[3], back[0], back[1]]; }
     const bsh = document.createElement("div"); bsh.className = "sheet";
-    back.forEach(c=>{
-      const s = document.createElement("div"); s.className = "slot back" + (c?"":" empty");
+    back.forEach(function(c){
+      const s = document.createElement("div"); s.className = "slot back" + (c ? "" : " empty");
       s.innerHTML = c ? cardBackHTML(c) : "";
       bsh.appendChild(s);
     });
     area.appendChild(bsh);
-  });
+  }
   updatePrintInfo(cs.length);
 }
-function updatePrintInfo(n){
-  if(n === undefined) n = listFor().length;
-  const pages = Math.ceil(n/6);
-  const txt = n + " thẻ → " + pages + " tờ giấy"
-    + (printMode === "duplex" ? " (in 2 mặt = " + (pages*2) + " trang)" : "");
-  const el = $("printInfo"); if(el) el.textContent = "🖨️ " + txt
-    + " — nhớ chọn khổ A4, không lề (margins: None), Scale 100%.";
+
+/* ================= SU KIEN ================= */
+function setMode(m){
+  mode = m;
+  $("tabSched").className = "tab" + (m === "sched" ? " on" : "");
+  $("tabFree").className = "tab" + (m === "free" ? " on" : "");
+  if (m === "free") buildFree();
+  refresh();
 }
+$("tabSched").onclick = function(){ setMode("sched"); };
+$("tabFree").onclick = function(){ setMode("free"); };
+$("card").onclick = function(){ $("card").classList.toggle("flip"); };
+$("bAgain").onclick = function(){ rate("again"); };
+$("bHard").onclick = function(){ rate("hard"); };
+$("bGood").onclick = function(){ rate("good"); };
+$("bEasy").onclick = function(){ rate("easy"); };
+$("undo").onclick = undo;
+$("shuf").onclick = function(){ if (mode === "free"){ buildFree(); refresh(); } else { gid = gid; freeOrder = null; buildFree(); setMode("free"); } };
+$("checkNow").onclick = function(){ refresh(); };
+$("prev").onclick = function(){ jump(-1); };
+$("next").onclick = function(){ jump(1); };
+$("printSingle").onclick = function(){ buildPrint("single"); window.print(); };
+$("printDuplex").onclick = function(){ buildPrint("duplex"); window.print(); };
+$("edge").onchange = function(){ buildPrint(); };
+window.addEventListener("beforeprint", function(){ buildPrint(); });
 
-window.addEventListener("beforeprint", ()=>{ if(gid) buildPrint(); });
-
-$("card").onclick = flip;
-$("next").onclick = ()=>go(1);
-$("prev").onclick = ()=>go(-1);
-$("shuf").onclick = ()=>buildOrder(true);
-$("markOk").onclick = ()=>mark(true);
-$("markNo").onclick = ()=>mark(false);
-$("onlyKnown").onclick = ()=>{
-  onlyUnknown = !onlyUnknown;
-  $("onlyKnown").style.background = onlyUnknown ? "var(--brand)" : "";
-  $("onlyKnown").style.color = onlyUnknown ? "#fff" : "";
-  buildOrder(false);
+function fillSettings(){
+  $("sNewPerDay").value = S.newPerDay;
+  $("sLearnSteps").value = S.learnSteps.join(" ");
+  $("sRelearnSteps").value = S.relearnSteps.join(" ");
+  $("sGraduate").value = S.graduate;
+  $("sEasyIvl").value = S.easyIvl;
+  $("sStartEase").value = S.startEase;
+}
+$("saveSettings").onclick = function(){
+  const steps = $("sLearnSteps").value.trim().split(/\s+/).map(Number).filter(function(x){ return x > 0; });
+  const rsteps = $("sRelearnSteps").value.trim().split(/\s+/).map(Number).filter(function(x){ return x > 0; });
+  S.newPerDay = Math.max(0, parseInt($("sNewPerDay").value, 10) || 0);
+  S.learnSteps = steps.length ? steps : [1, 10];
+  S.relearnSteps = rsteps.length ? rsteps : [10];
+  S.graduate = Math.max(0.5, parseFloat($("sGraduate").value) || 1);
+  S.easyIvl = Math.max(0.5, parseFloat($("sEasyIvl").value) || 4);
+  S.startEase = Math.max(130, parseInt($("sStartEase").value, 10) || 250);
+  saveJSON("mln131srsCfg", S);
+  fillSettings(); refresh();
+  $("setMsg").textContent = "✅ Đã lưu cài đặt. (Thẻ mới " + S.newPerDay + "/ngày · bước học " + S.learnSteps.join("-") + " phút)";
 };
-$("resetKnown").onclick = ()=>{
-  if(confirm('Xóa toàn bộ đánh dấu "đã thuộc"?')){ known = new Set(); save(); buildOrder(false); }
+$("resetGroup").onclick = function(){
+  if (!confirm("Xoá tiến độ ôn của " + pool().length + " thẻ trong nhóm này?")) return;
+  pool().forEach(function(c){ delete DB[c.n]; });
+  saveJSON("mln131srsDb", DB); freeOrder = null; refresh();
+  $("setMsg").textContent = "🗑️ Đã xoá tiến độ nhóm đang chọn.";
 };
-$("printSingle").onclick = ()=>{ buildPrint("single"); window.print(); };
-$("printDuplex").onclick = ()=>{ buildPrint("duplex"); window.print(); };
-$("edge").onchange = ()=>buildPrint();
+$("resetAll").onclick = function(){
+  if (!confirm("Xoá TOÀN BỘ tiến độ ôn của cả " + CARDS.length + " thẻ?")) return;
+  DB = {}; DAYMETA = { day: today(), newDone: 0 };
+  saveJSON("mln131srsDb", DB); saveJSON("mln131srsDay", DAYMETA);
+  freeOrder = null; refresh();
+  $("setMsg").textContent = "🗑️ Đã xoá toàn bộ tiến độ.";
+};
+$("exportDb").onclick = function(){
+  const blob = new Blob([JSON.stringify({ cfg: S, db: DB, day: DAYMETA }, null, 1)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "mln131-tien-do-on.json";
+  a.click();
+  $("setMsg").textContent = "📤 Đã tải file tiến độ (giữ lại để khôi phục khi đổi máy).";
+};
 
-document.addEventListener("keydown", e=>{
-  if(e.target.tagName==="INPUT" || e.target.tagName==="SELECT") return;
-  if(e.code==="Space"){ e.preventDefault(); flip(); }
-  else if(e.key==="ArrowRight") go(1);
-  else if(e.key==="ArrowLeft") go(-1);
-  else if(e.key==="1") mark(false);
-  else if(e.key==="2") mark(true);
-  else if(e.key==="s"||e.key==="S") buildOrder(true);
+document.addEventListener("keydown", function(e){
+  if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA") return;
+  if (e.code === "Space"){ e.preventDefault(); $("card").classList.toggle("flip"); }
+  else if (e.key === "1") rate("again");
+  else if (e.key === "2") rate("hard");
+  else if (e.key === "3") rate("good");
+  else if (e.key === "4") rate("easy");
+  else if (e.key === "ArrowLeft") jump(-1);
+  else if (e.key === "ArrowRight") jump(1);
+  else if (e.key === "z" || e.key === "Z") undo();
+  else if (e.key === "s" || e.key === "S") $("shuf").onclick();
 });
 
-chips(); buildOrder(false);
+fillSettings();
+chips();
+refresh();
+tick = setInterval(function(){ if (!cur && mode === "sched") refresh(); }, 20000);
 </script>
 </body>
 </html>
