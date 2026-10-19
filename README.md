@@ -34,6 +34,19 @@ Tham số (kiểu Anki mặc định): bước học `1 → 10 phút`, tốt ngh
 xem trước `20 thẻ mới/ngày` — chỉnh được trong ⚙️ Cài đặt. Có **Hoàn tác** (Z), chế độ **🎯 Học hôm nay (theo lịch)**
 và **📚 Học tự do**, xuất tiến độ ra file JSON. Tiến độ lưu trong trình duyệt nên đóng tab vẫn giữ nguyên lịch.
 
+### ⏳ Chỉ còn vài ngày trước khi thi?
+
+Mặc định kiểu Anki sẽ đẩy khoảng cách lên tận vài tháng, **không dùng được cho ôn gấp**. Mở ⚙️ Cài đặt và bấm
+**⏳ Ôn gấp 4 ngày** (hoặc **🔥 Ôn gấp 2 ngày**): app tự nén khoảng cách, hạ hệ số dễ và **chặn không cho vượt quá 🎯 ngày thi**
+(bạn có thể tự nhập ngày thi). Mỗi thẻ vẫn quay lại **3–4 lần** trước khi thi:
+
+```
+10 phút  →  1 ngày  →  1,6 ngày  →  1,7 ngày (sát ngày thi)
+```
+
+Với 441 thẻ: ~120 thẻ mới/ngày, tổng ~1.700 lượt trong 4 ngày ≈ **35–40 phút/ngày**.
+Còn 2 ngày thì chế độ gấp 2 ngày cho ~230 thẻ mới/ngày, khoảng cách 15 phút → 0,5 ngày → 1 ngày.
+
 **In thành thẻ giấy:** nút *In 1 mặt* (gấp đôi) hoặc *In 2 mặt* (cắt rời) – 6 thẻ/tờ A4, chọn đúng kiểu lật cạnh dài/cạnh ngắn của máy in. Khổ A4, Margins: None, Scale 100%.
 
 **Phím tắt:** `Space` lật thẻ · `1` Lại · `2` Khó · `3` Được · `4` Dễ · `←` `→` xem trước/sau · `Z` hoàn tác · `S` trộn.

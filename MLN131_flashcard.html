@@ -161,6 +161,12 @@ button.sm{padding:8px 11px;font-size:.84rem}
   <div class="legend">
     <b>Cách dùng:</b> đọc câu hỏi → tự trả lời → bấm thẻ để xem đáp án → chọn mức độ nhớ. App sẽ hẹn ngày gặp lại
     (nhớ càng chắc → càng lâu mới gặp lại).<br>
+    <b>Công thức lặp lại:</b> thẻ mới đi qua <i>bước học</i> (mặc định 1 → 10 phút) rồi <i>tốt nghiệp</i> 1 ngày.
+    Khi đã ở vòng ôn tập, mỗi lần trả lời: <b>Được</b> = khoảng cách × hệ số dễ · <b>Khó</b> = × 1,2 ·
+    <b>Dễ</b> = × hệ số dễ × 1,3 · <b>Lại</b> = quên, hệ số dễ −20 % và học lại sau 10 phút.
+    Khoảng cách bị chặn trong khoảng <i>nhỏ nhất</i> → <i>lớn nhất</i> (và không vượt quá 🎯 ngày thi nếu bạn đặt).<br>
+    <b>Ôn gấp:</b> nếu chỉ còn vài ngày, mở ⚙️ Cài đặt bấm <b>⏳ Ôn gấp 4 ngày</b> hoặc <b>🔥 Ôn gấp 2 ngày</b> —
+    app sẽ hạ hệ số dễ và chặn khoảng cách để thẻ quay lại liên tục trong thời gian đó.<br>
     <b>Phím tắt:</b> <kbd>Space</kbd> lật thẻ · <kbd>1</kbd> Lại · <kbd>2</kbd> Khó · <kbd>3</kbd> Được · <kbd>4</kbd> Dễ ·
     <kbd>←</kbd> <kbd>→</kbd> xem trước/sau · <kbd>Z</kbd> hoàn tác · <kbd>S</kbd> trộn<br>
     Tiến độ lưu trên máy (localStorage) — đóng tab mở lại vẫn còn nguyên lịch ôn.
@@ -175,6 +181,13 @@ button.sm{padding:8px 11px;font-size:.84rem}
       <div class="field"><label>Khoảng cách khi tốt nghiệp (ngày)</label><input id="sGraduate" type="number" step="0.5" min="0.5"></div>
       <div class="field"><label>Khoảng cách nút "Dễ" cho thẻ mới (ngày)</label><input id="sEasyIvl" type="number" step="0.5" min="0.5"></div>
       <div class="field"><label>Hệ số dễ ban đầu (%)</label><input id="sStartEase" type="number" min="130" max="500"></div>
+      <div class="field"><label>Khoảng cách nhỏ nhất (ngày)</label><input id="sMinIvl" type="number" step="0.1" min="0.1"></div>
+      <div class="field"><label>🎯 Ngày thi (bỏ trống = không giới hạn)</label><input id="sExam" type="date"></div>
+    </div>
+    <div class="controls" style="margin-bottom:10px">
+      <button class="ghost sm" id="presetAnki">⚙️ Mặc định (như Anki)</button>
+      <button class="ghost sm" id="preset4">⏳ Ôn gấp 4 ngày</button>
+      <button class="ghost sm" id="preset2">🔥 Ôn gấp 2 ngày</button>
     </div>
     <div class="controls" style="margin-bottom:0">
       <button class="sm" id="saveSettings">Lưu cài đặt</button>
@@ -213,9 +226,9 @@ const $ = id => document.getElementById(id);
 const MIN = 60000, HOUR = 3600000, DAY = 86400000;
 const DEF = { newPerDay: 20, learnSteps: [1, 10], relearnSteps: [10], graduate: 1, easyIvl: 4,
               startEase: 250, easyBonus: 1.3, hardMult: 1.2, lapseEase: -20, hardEase: -15,
-              easyEase: 15, minEase: 130, maxIvl: 36500, ivlMod: 1.0 };
+              easyEase: 15, minEase: 130, maxIvl: 36500, ivlMod: 1.0, minIvl: 1, examDate: "" };
 
-let S = loadJSON("mln131srsCfg", null) || JSON.parse(JSON.stringify(DEF));
+let S = Object.assign(JSON.parse(JSON.stringify(DEF)), loadJSON("mln131srsCfg", null) || {});
 let DB = loadJSON("mln131srsDb", null) || {};
 let DAYMETA = loadJSON("mln131srsDay", null) || { day: "", newDone: 0 };
 migrateOld();
@@ -254,7 +267,11 @@ function schedule(c0, rating, now){
   };
   const easeUp = function(v){ return v + (S.easyEase || 15); };
   const easeDn = function(v, k){ return Math.max(S.minEase, v + (k || S.lapseEase)); };
-  const cap = function(d){ return Math.min(S.maxIvl, Math.max(1, Math.round(d))); };
+  const maxI = examMaxIvl(now);
+  const cap = function(d){
+    let v = d >= 3 ? Math.round(d) : Math.round(d * 10) / 10;
+    return Math.min(maxI, Math.max(S.minIvl || 1, v));
+  };
 
   if (rating === "again"){
     if (c.st === 2){                                   // the dang on tap -> quen
@@ -316,18 +333,40 @@ function schedule(c0, rating, now){
 }
 
 function fmt(ms){
+  ms = Math.max(0, ms);
   if (ms < MIN) return "dưới 1 phút";
   if (ms < HOUR) return Math.round(ms / MIN) + " phút";
-  if (ms < DAY) { const h = ms / HOUR; return (h < 10 ? h.toFixed(h < 2 ? 1 : 0) : Math.round(h)) + " giờ"; }
+  if (ms < DAY) return (ms / HOUR).toFixed(1).replace(".", ",") + " giờ";
   const d = ms / DAY;
-  if (d < 30) return (d < 10 ? d.toFixed(d < 2 ? 1 : 0) : Math.round(d)) + " ngày";
+  if (d < 30) return (d < 10 ? d.toFixed(1).replace(".", ",") : String(Math.round(d))) + " ngày";
   if (d < 365) return Math.round(d / 30.4) + " tháng";
-  return (d / 365).toFixed(1) + " năm";
+  return (d / 365).toFixed(1).replace(".", ",") + " năm";
 }
 function previewLabel(c, rating){
   const now = Date.now();
   const n = schedule(c, rating, now);
   return (n.st === 2 ? fmt(n.ivl * DAY) : fmt(n.due - now));
+}
+
+/* ===== NGAY THI: chan khoang cach khong vuot qua ngay thi ===== */
+function examEnd(){
+  if (!S.examDate) return 0;
+  const p = String(S.examDate).split("-");
+  if (p.length !== 3) return 0;
+  const d = new Date(+p[0], +p[1] - 1, +p[2], 23, 59, 0);
+  return d.getTime();
+}
+function daysToExam(at){
+  const e = examEnd();
+  if (!e) return null;
+  return (e - (at || Date.now())) / DAY;
+}
+function examMaxIvl(at){
+  const dl = daysToExam(at);
+  if (dl === null) return S.maxIvl;
+  if (dl <= 0) return 0.25;
+  const raw = Math.min(S.maxIvl, Math.max(0.25, dl));
+  return raw < 3 ? Math.round(raw * 10) / 10 : Math.round(raw);
 }
 
 /* ================= NHOM / NGAY ================= */
@@ -406,6 +445,12 @@ function chips(){
     box.appendChild(b);
   });
 }
+function examBadge(){
+  const dl = daysToExam();
+  if (dl === null) return "";
+  if (dl <= 0) return ' · 🎯 <b style="color:#dc2626">đã tới/hết ngày thi</b>';
+  return ' · 🎯 còn <b style="color:#dc2626">' + dl.toFixed(1).replace(".", ",") + ' ngày</b> tới thi';
+}
 function renderDone(extra){
   $("card").classList.remove("flip");
   $("fTags").innerHTML = ""; $("fOpts").innerHTML = "";
@@ -428,7 +473,8 @@ function render(){
     const p = pool();
     const nwLeft = p.filter(function(c){ const s = DB[c.n]; return !s || s.st === 0; }).length;
     let ex = "Nhóm này không còn thẻ nào cần học lúc này.";
-    if (inf) ex = "Còn <b>" + inf.n + "</b> thẻ chưa đến hạn — thẻ gần nhất sau <b>" + fmt(inf.in) + "</b>.<br>Mai quay lại nhé, hoặc bấm 🔄 để kiểm tra lại.";
+    if (inf) ex = "Còn <b>" + inf.n + "</b> thẻ chưa đến hạn — thẻ gần nhất sau <b>" + fmt(inf.in) + "</b>.<br>Bấm 🔄 để kiểm tra lại"
+      + (daysToExam() !== null && daysToExam() > 0 ? ", hoặc để đó học môn khác rồi quay lại." : ", hoặc mai quay lại nhé.");
     else if (nwLeft) ex = "Còn <b>" + nwLeft + "</b> thẻ mới, nhưng bạn đã đạt giới hạn <b>" + S.newPerDay + "</b> thẻ mới hôm nay.<br>Tăng giới hạn trong ⚙️ Cài đặt hoặc bấm 📚 Học tự do.";
     renderDone(ex);
     return;
@@ -460,7 +506,7 @@ function render(){
   } else {
     const doneToday = Math.max(0, DAYMETA.newDone);
     $("mPos").textContent = "🎯 Học hôm nay • " + (m ? m.emoji + " " + m.label : "") + " • " + pool().length + " thẻ";
-    $("mStat").innerHTML = "Thẻ mới hôm nay: <b>" + doneToday + "/" + S.newPerDay + "</b>";
+    $("mStat").innerHTML = "Thẻ mới hôm nay: <b>" + doneToday + "/" + S.newPerDay + "</b>" + examBadge();
     const inf = nextDueInfo();
     $("bar").style.width = (inf ? Math.max(4, 100 - Math.min(100, inf.n / Math.max(1, total) * 100)) : 100) + "%";
   }
@@ -625,20 +671,58 @@ function fillSettings(){
   $("sGraduate").value = S.graduate;
   $("sEasyIvl").value = S.easyIvl;
   $("sStartEase").value = S.startEase;
+  $("sMinIvl").value = S.minIvl;
+  $("sExam").value = S.examDate || "";
 }
-$("saveSettings").onclick = function(){
+function readSettings(){
   const steps = $("sLearnSteps").value.trim().split(/\s+/).map(Number).filter(function(x){ return x > 0; });
   const rsteps = $("sRelearnSteps").value.trim().split(/\s+/).map(Number).filter(function(x){ return x > 0; });
   S.newPerDay = Math.max(0, parseInt($("sNewPerDay").value, 10) || 0);
   S.learnSteps = steps.length ? steps : [1, 10];
   S.relearnSteps = rsteps.length ? rsteps : [10];
-  S.graduate = Math.max(0.5, parseFloat($("sGraduate").value) || 1);
-  S.easyIvl = Math.max(0.5, parseFloat($("sEasyIvl").value) || 4);
+  S.graduate = Math.max(0.25, parseFloat($("sGraduate").value) || 1);
+  S.easyIvl = Math.max(0.25, parseFloat($("sEasyIvl").value) || 4);
   S.startEase = Math.max(130, parseInt($("sStartEase").value, 10) || 250);
+  S.minIvl = Math.max(0.05, parseFloat($("sMinIvl").value) || 1);
+  S.examDate = $("sExam").value || "";
+  return S;
+}
+function commit(msg){
   saveJSON("mln131srsCfg", S);
-  fillSettings(); refresh();
-  $("setMsg").textContent = "✅ Đã lưu cài đặt. (Thẻ mới " + S.newPerDay + "/ngày · bước học " + S.learnSteps.join("-") + " phút)";
+  fillSettings(); freeOrder = null; refresh();
+  $("setMsg").innerHTML = msg;
+}
+$("saveSettings").onclick = function(){
+  readSettings();
+  commit("✅ Đã lưu cài đặt. Thẻ mới <b>" + S.newPerDay + "/ngày</b> · bước học " + S.learnSteps.join("-")
+       + " phút · khoảng cách " + S.minIvl + "–" + examMaxIvl().toFixed(2).replace(/\.?0+$/, "")
+       + " ngày" + (S.examDate ? " (chặn tới ngày thi " + S.examDate + ")" : "") + ".");
 };
+
+const PRESETS = {
+  anki: { newPerDay: 20, learnSteps: [1, 10], relearnSteps: [10], graduate: 1, easyIvl: 4,
+          startEase: 250, maxIvl: 36500, minIvl: 1, examDate: "" },
+  d4:   { newPerDay: 120, learnSteps: [1, 10], relearnSteps: [5], graduate: 1, easyIvl: 2,
+          startEase: 160, maxIvl: 4, minIvl: 0.5, examDays: 4 },
+  d2:   { newPerDay: 230, learnSteps: [1, 10], relearnSteps: [5], graduate: 0.5, easyIvl: 1,
+          startEase: 140, maxIvl: 2, minIvl: 0.25, examDays: 2 }
+};
+function applyPreset(name){
+  const p = JSON.parse(JSON.stringify(PRESETS[name]));
+  const days = p.examDays; delete p.examDays;
+  Object.assign(S, p);
+  if (days){
+    const d = new Date(Date.now() + days * DAY);
+    S.examDate = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  commit("⚡ Đã áp dụng chế độ <b>" + (name === "anki" ? "Mặc định (như Anki)" : "Ôn gấp " + days + " ngày") + "</b>: thẻ mới "
+    + S.newPerDay + "/ngày · tốt nghiệp " + S.graduate + " ngày · hệ số dễ " + S.startEase + "% · khoảng cách "
+    + S.minIvl + "–" + Math.min(S.maxIvl, days || S.maxIvl) + " ngày"
+    + (S.examDate ? " · ngày thi " + S.examDate : "") + ".<br>Thẻ cũ giữ nguyên tiến độ, chỉ đổi cách hẹn lịch từ giờ.");
+}
+$("presetAnki").onclick = function(){ applyPreset("anki"); };
+$("preset4").onclick = function(){ applyPreset("d4"); };
+$("preset2").onclick = function(){ applyPreset("d2"); };
 $("resetGroup").onclick = function(){
   if (!confirm("Xoá tiến độ ôn của " + pool().length + " thẻ trong nhóm này?")) return;
   pool().forEach(function(c){ delete DB[c.n]; });
