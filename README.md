@@ -33,7 +33,20 @@ Mở trực tiếp file `.html` bằng trình duyệt (Chạy offline, không c�
 | **Dễ** | tốt nghiệp 4 ngày | khoảng cách × hệ số dễ × 1,3 |
 
 Tham số (kiểu Anki mặc định): bước học `1 → 10 phút`, tốt nghiệp `1 ngày`, hệ số dễ khởi đầu `250 %`,
-xem trước `20 thẻ mới/ngày` — chỉnh được trong ⚙️ Cài đặt. Có **Hoàn tác** (Z), 3 chế độ: **🎯 Học hôm nay (theo lịch)** · **📚 Học tự do** · **📋 Danh sách câu hỏi** (xem trọn nhóm một lần, có tìm kiếm, mở rộng/thu gọn, in ra A4), và xuất tiến độ ra file JSON. Tiến độ lưu trong trình duyệt nên đóng tab vẫn giữ nguyên lịch.
+xem trước `20 thẻ mới/ngày` — chỉnh được trong ⚙️ Cài đặt. Có **Hoàn tác** (Z), 4 chế độ: **🎯 Học hôm nay (theo lịch)** · **📚 Học tự do** · **✅ Tự luận (chọn đáp án)** · **📋 Danh sách câu hỏi** (xem trọn nhóm một lần, có tìm kiếm, mở rộng/thu gọn, in ra A4), và xuất tiến độ ra file JSON. Tiến độ lưu trong trình duyệt nên đóng tab vẫn giữ nguyên lịch.
+
+### ✅ Chế độ "Tự luận" — bấm chọn đáp án, biết đúng/sai ngay
+
+Cùng bộ 441 câu nhưng bạn **bấm thẳng vào đáp án** thay vì tự lật thẻ:
+
+- Bấm A / B / C / D (câu nhiều đáp án thì bấm đủ số — app nhắc **"Câu này chọn N đáp án"**), bấm lại để bỏ chọn.
+- Bấm **✔️ Kiểm tra** → hiện ngay kết quả **ngay dưới các đáp án**:
+  - ✅ xanh: đúng hết · 🟡 vàng: *gần đúng* (chỉ bỏ sót, không chọn sai) · ❌ đỏ: chọn sai.
+  - Đáp án đúng tô **xanh**, chỗ bạn chọn sai tô **đỏ**, chỗ bỏ sót tô **vàng**.
+  - Dòng dưới cùng ghi rõ **đáp án đúng** + **đã xếp vào lịch ôn mức nào** + cách đi tiếp.
+- Điểm tự động vào lịch ôn: **sai = Lại** · **gần đúng = Khó** · **đúng = Được** · **đúng trong 4 giây = Dễ**.
+- Phím tắt: **1–4** chọn đáp án · **Space/Enter** kiểm tra rồi sang câu sau · **←/→** câu trước/sau · **R** xem đáp án (không tính điểm).
+- Thanh trên hiện **Câu x/y · Đúng · Sai · Bỏ qua · % đúng**; hết vòng có bảng tổng kết, **♻️ Làm lại từ đầu** hoặc **🔀 Trộn thứ tự**.
 
 ### ⏳ Chỉ còn vài ngày trước khi thi?
 
