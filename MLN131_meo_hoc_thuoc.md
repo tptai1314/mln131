@@ -175,3 +175,46 @@
 - Nhóm SỐ phải gần **100 %** (chỉ 15 câu, học 1 lần là thuộc).
 - Nhóm NGƯỜI phải **≥ 90 %** (chỉ ~20 câu, phần lớn là nhớ tên).
 - Nhóm THỜI GIAN học theo dòng ở mục 3 là xong.
+
+
+---
+
+## 4. MẸO HỌC THUỘC NHANH CHO 4 NGÀY ÔN THI
+
+### Kế hoạch 4 ngày (cực hiệu quả)
+
+| Ngày | Nội dung | Thời gian |
+|---|---|---|
+| **Ngày 1** | Học nhóm **SỐ + THỜI GIAN** (các câu dễ thuộc nhất). Làm 1 vòng `MLN131_thi_thu.html` (441 câu), tập trung ghi lại câu sai. | 2–3 giờ |
+| **Ngày 2** | Học nhóm **NGƯỜI + "Đâu không phải" (19 câu)**. Ôn lại toàn bộ câu sai ngày 1 (Flashcard: dùng chế độ **Học hôm nay**). | 2–3 giờ |
+| **Ngày 3** | Luyện đề **Thi thử** (bấm giờ 60–90 phút, giống thi thật). Chỉ làm lại **câu sai** đến khi không còn sai. | 1–2 giờ |
+| **Ngày 4 (trước thi)** | Ôn lại **chỉ câu sai** (10–20 câu tối đa). Không học thêm mới, chỉ củng cố. | 15–30 phút |
+
+---
+
+### Mẹo đặc biệt theo từng loại câu
+
+**Câu nhiều đáp án (26 câu) – điểm dễ mất nhất:**
+- Luôn đọc kỹ: "chọn hai đáp án", "chọn ba đáp án", "các đáp án đúng" → đếm số ô trước khi nộp.
+- Nếu bỏ sót 1 đáp án đúng → 0 điểm. Ưu tiên **tick đủ số lượng yêu cầu**.
+
+**Câu "Đâu không phải / không đúng" (19 câu):**
+- Đọc ngược: chuyển thành khẳng định rồi tìm **câu sai** trong 4 đáp án.
+- Nếu thấy 3 đáp án có vẻ đúng logic → chọn cái **còn lại**.
+
+**Câu trùng (111–164, 299–300):**
+- Học **1 câu** nhớ **2 câu**. Ưu tiên học câu có nội dung rõ ràng hơn.
+
+**Câu "Tất cả các đáp án đều đúng" (27 câu):**
+- Tỉ lệ đúng thấp (41%). Chỉ chọn khi **thật sự kiểm chứng được cả 4 đều đúng**. Không chọn mặc định.
+
+---
+
+### Mẹo nhớ siêu nhanh
+
+- **Phương pháp lặp lại ngắt quãng (Anki):** Flashcard dùng thuật toán SM-2 tự động đưa câu khó lên trước → cực hiệu quả với 441 câu.
+- **Học theo nhóm, không lan man:** Học xong 1 nhóm (Số/Người/Thời gian) thì làm đề nhỏ để đóng khung ngay.
+- **Active recall > Passive reading:** **Bấm chọn đáp án** (Flashcard) hiệu quả gấp 2–3 lần đọc chép.
+- **Spaced repetition:** Ôn lại câu sai **sau 10 phút → 1 ngày → 3 ngày** (theo lịch của app).
+
+**Tối ưu nhất:** Mở `MLN131_flashcard.html` → Tab **Học hôm nay**, làm liên tục đến khi báo "Không còn thẻ nào cần học". Chỉ cần vậy là đủ qua môn!
