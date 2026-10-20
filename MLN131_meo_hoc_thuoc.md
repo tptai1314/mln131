@@ -259,3 +259,47 @@
 - **Spaced repetition:** Ôn lại câu sai **sau 10 phút → 1 ngày → 3 ngày** (theo lịch của app).
 
 **Tối ưu nhất:** Mở `MLN131_flashcard.html` → Tab **Học hôm nay**, làm liên tục đến khi báo "Không còn thẻ nào cần học". Chỉ cần vậy là đủ qua môn!
+
+
+
+## 6. NHÓM 4 - CÁC DẠNG CÂU BẪY THƯỜNG GẶP
+
+### 6.1 Câu "Đâu không phải / không đúng" (19 câu)
+Quy tắc: tìm đáp án SAI.
+
+| Chiến thuật | Cách áp dụng |
+|---|---|
+| Đọc ngược | Chuyển thành câu khẳng định → loại đáp án đúng, chọn đáp án sai |
+| Loại trừ | 3 đáp án đúng → đáp án còn lại thường là "không phải" |
+| Chú ý từ phủ định | Cẩn thận với "không", "chưa", "ngoại trừ" |
+
+### 6.2 Câu "Tất cả các đáp án đều đúng" (27 câu - đúng ~41%)
+| Chiến thuật | Cách áp dụng |
+|---|---|
+| Không chọn mặc định | Chỉ chọn khi chắc chắn CẢ 4 đều đúng |
+| Cảnh giác | Nếu chỉ 3 đáp án đúng → tuyệt đối không chọn |
+| Loại trừ nhanh | Tìm thấy 1 đáp án sai → loại ngay |
+
+### 6.3 Câu nhiều đáp án (2-3 đáp án) - 26 câu
+| Mẹo | Giải thích |
+|---|---|
+| Đếm trước khi tick | Luôn xem yêu cầu "chọn hai/ba đáp án" |
+| Bỏ sót = 0 điểm | Chọn thiếu hoặc thừa đều mất điểm |
+| Tập trung từ khóa | Các đáp án đúng thường bổ sung lẫn nhau |
+
+### 6.4 Câu trùng nguyên văn (2 cặp)
+- 111 - 164: trùng hoàn toàn → học 1 nhớ 2
+- 299 - 300: trùng hoàn toàn → học 1 nhớ 2
+
+### 6.5 Câu có đáp án toàn con số (15 câu)
+- Học theo **bộ số**: 5,6,8,4,3,1,2
+- Ghi nhớ bằng **câu hỏi → con số** (không học theo chữ cái)
+- Ưu tiên học thuộc lòng danh sách mục 1
+
+### 6.6 Tổng kết chiến thuật thi
+| Tình huống | Giải pháp |
+|---|---|
+| Không nhớ đáp án | Chọn **A** (gần 40% bộ đề) + loại trừ logic |
+| Nghi ngờ giữa 2 đáp án | Chọn theo nhóm chủ đề + loại trừ |
+| Hết thời gian | Dùng quy tắc A + kiểm tra nhanh câu nhiều đáp án |
+| Câu khó | Đánh dấu và làm sau, tránh mất thời gian |
