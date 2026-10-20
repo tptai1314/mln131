@@ -181,8 +181,6 @@
 
 
 
-## PHỤ LỤC – CÁC NHÓM MẸO CÒN LẠI (HOÀN CHỈNH)
-
 ### A. NHÓM KHÁI NIỆM – THUẬT NGỮ (học nhanh)
 
 | Thuật ngữ / khái niệm | Mẹo ghi nhớ | Ghi chú |
@@ -307,8 +305,6 @@ Quy tắc: tìm đáp án SAI.
 
 
 
-## PHU LUC II - MEO THEO TUNG NHOM TRONG FLASHCARD
-
 ### Bang tom tat cac nhom
 | Nhom | So cau | Meo hoc |
 |---|---|---|
@@ -328,3 +324,36 @@ Quy tắc: tìm đáp án SAI.
 | Cau tron | 22 | On lai nhung dang con yeu |
 
 Loi khuyen: Moi ngay chon 1-2 nhom yeu nhat trong Flashcard va hoc den khi het the can on.
+
+
+
+
+## PHU LUC - MEO THEO TUNG NHOM TRONG FLASHCARD (DAY DU)
+
+### 1) Nhom co so
+| Nhom | So cau | Meo nhanh |
+|---|---|---|
+| Tat ca 441 | 441 | On deu, uu tien cau sai truoc |
+| Cau tra loi la SO | 15 | Bat buoc thuoc - hoc theo bang muc 1, nho bo so 1,3,4,5,6,8 |
+| Cau "ai - noi gi" | 19 | Hoc theo bang trich dan muc 2 (Ho Chi Minh, Lenin, Mac-Angghen, Ph.Angghen) |
+| Cau thoi gian / nam | 39 | Hoc theo dong thoi gian muc 3 - 2025=A, 2030=B, 2045=C |
+
+### 2) Nhom chuyen de
+| Nhom | So cau | Meo nhanh |
+|---|---|---|
+| Ton giao | 32 | 3 nguon goc, quan diem, vai tro ton giao |
+| Gia dinh - Hon nhan | 64 | 4 chuc nang, 4 phuong huong xay dung gia dinh |
+| Dan toc | 35 | 5 dac trung dan toc, phan biet nghia rong/nghia hep |
+| Lien minh - Cach mang - Dang | 58 | Dang lanh dao, lien minh giai cap, nhiem vu cach mang |
+| Giai cap cong nhan | 48 | Su menh lich su, dac diem, vai tro lanh dao |
+| Dan chu - Nha nuoc | 62 | Nha nuoc phap quyen XHCN Viet Nam, dan chu XHCN |
+| Tac pham - Tu tuong | 33 | Tac pham quan trong, trich dan noi tieng |
+| Qua do - Chu nghia XH | 64 | 6 dac trung ban chat CNXH, thoi ky qua do |
+| Kinh te - Co cau | 23 | Co cau kinh te, thanh phan kinh te thoi ky qua do |
+
+### 3) Nhom luyen tap
+| Nhom | So cau | Meo nhanh |
+|---|---|---|
+| Cau tron | 22 | On lai sau khi hoc tung nhom, chi lam khi da thuoc nhom yeu |
+
+Loi khuyen: uu tien SỐ - NGƯỜI - THỜI GIAN truoc, sau do hoc tung nhom yeu nhat.
