@@ -46,6 +46,8 @@ h1{font-size:1.3rem;margin:4px 0 2px}
 .tag.qn{background:#fee2e2;color:#991b1b}
 .tag.st0{background:#dbeafe;color:#1e40af}.tag.st1{background:#fef3c7;color:#92400e}
 .tag.st2{background:#dcfce7;color:#166534}.tag.st3{background:#ffe4e6;color:#9f1239}
+.tag.multi{background:#fff7ed;color:#c2410c;border:1.5px solid #fb923c;font-weight:900;letter-spacing:.2px}
+.tag.multi.wide{flex:0 0 100%;font-size:.81rem;padding:6px 10px;text-align:left}
 .q{font-size:1.03rem;line-height:1.55;font-weight:650;margin-bottom:12px}
 .opt{padding:8px 12px;border-radius:10px;margin-bottom:7px;font-size:.92rem;line-height:1.45;
      background:#f8fafc;border:1px solid #eef2f7;color:#334155}
@@ -121,6 +123,7 @@ button.sm{padding:8px 11px;font-size:.84rem}
   .slot{padding:6mm 7mm;display:flex;flex-direction:column;overflow:hidden;border:1px dashed #cbd5e1}
   .slot.empty{border-color:transparent}
   .p-tag{font-size:7.6pt;font-weight:800;color:#b91c1c;margin-bottom:2mm}
+  .p-multi{color:#c2410c;font-weight:900}
   .p-q{font-size:10pt;font-weight:700;line-height:1.35;margin-bottom:3mm}
   .p-o{font-size:9pt;line-height:1.35;margin-bottom:1.4mm;color:#1e293b}
   .p-o b{color:#475569;margin-right:1.5mm}
@@ -456,11 +459,20 @@ function tagHTML(c){
   const st = stateOf(c.n).st;
   const lbl = ["🆕 Mới", "🟠 Đang học", "🟢 Ôn tập", "🔴 Học lại"][st];
   const t = META.find(function(x){ return x.id === c.t; });
-  return '<span class="tag qn">Câu ' + c.n + '</span><span class="tag st' + st + '">' + lbl + '</span>'
+  return '<span class="tag qn">Câu ' + c.n + '</span>'
+    + '<span class="tag st' + st + '">' + lbl + '</span>'
     + (c.k.indexOf("s") >= 0 ? '<span class="tag">🔢 SỐ</span>' : '')
     + (c.k.indexOf("n") >= 0 ? '<span class="tag">🧑 AI</span>' : '')
     + (c.k.indexOf("t") >= 0 ? '<span class="tag">⏱️ THỜI GIAN</span>' : '')
-    + '<span class="tag">' + (t ? t.emoji + " " + t.label : "") + '</span>';
+    + '<span class="tag">' + (t ? t.emoji + " " + t.label : "") + '</span>'
+    + multiWide(c);   /* dam bao no xuong dong dung ngay phia tren cau hoi */
+}
+/* nhieu dap an -> bao truoc tren cau hoi so luong phai chon */
+function multiTag(c){
+  return c.a.length > 1 ? '<span class="tag multi">⚠️ Chọn ' + c.a.length + ' đáp án</span>' : '';
+}
+function multiWide(c){
+  return c.a.length > 1 ? '<span class="tag multi wide">⚠️ Câu này chọn ' + c.a.length + ' đáp án</span>' : '';
 }
 function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]; }); }
 function optionsHTML(c, showAns){
@@ -627,6 +639,7 @@ function itemHTML(c){
   return '<div class="item' + (listOpenAll ? " open" : "") + '" data-n="' + c.n + '">'
     + '<div class="ihead">'
       + '<span class="tag qn">Câu ' + c.n + '</span>'
+      + multiTag(c)
       + '<span class="tag ' + cls + '">' + lbl + '</span>'
       + '<span class="iq">' + esc(c.q) + '</span>'
       + '<span class="iarrow">▸</span>'
@@ -723,7 +736,7 @@ function buildPrintList(){
     + cs.map(function(c){
         const lbl = ["Mới", "Đang học", "Ôn tập", "Học lại"][stateOf(c.n).st];
         return '<div class="l-item">'
-          + '<div class="l-head">Câu ' + c.n + ' · ' + lbl + '</div>'
+          + '<div class="l-head">Câu ' + c.n + ' · ' + lbl + multiP(c) + '</div>'
           + '<div class="l-q">' + esc(c.q) + '</div>'
           + c.o.map(function(t, i){ return '<div class="l-o">' + LETTER[i] + '. ' + esc(t) + '</div>'; }).join("")
           + '<div class="l-a">Đáp án: ' + c.a.split("").join(" – ") + '</div>'
@@ -733,12 +746,15 @@ function buildPrintList(){
   updatePrintInfo(cs.length);
 }
 let currentPrint = "single";
+function multiP(c){
+  return c.a.length > 1 ? ' · <span class="p-multi">⚠ Chọn ' + c.a.length + ' đáp án</span>' : '';
+}
 function cardFrontHTML(c){
-  return '<div class="p-tag">CÂU ' + c.n + '</div><div class="p-q">' + esc(c.q) + '</div>'
+  return '<div class="p-tag">CÂU ' + c.n + multiP(c) + '</div><div class="p-q">' + esc(c.q) + '</div>'
     + '<div class="p-opts">' + c.o.map(function(t, i){ return '<div class="p-o"><b>' + LETTER[i] + '.</b>' + esc(t) + '</div>'; }).join("") + '</div>';
 }
 function cardBackHTML(c){
-  return '<div class="p-tag">CÂU ' + c.n + '</div><div class="p-q">' + esc(c.q) + '</div>'
+  return '<div class="p-tag">CÂU ' + c.n + multiP(c) + '</div><div class="p-q">' + esc(c.q) + '</div>'
     + '<div class="p-opts">' + c.o.map(function(t, i){
         const ok = c.a.indexOf(LETTER[i]) >= 0;
         return '<div class="p-o' + (ok ? " ok" : "") + '"><b>' + LETTER[i] + '.</b>' + esc(t) + '</div>';
