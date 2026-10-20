@@ -179,6 +179,47 @@
 
 ---
 
+
+
+## PHỤ LỤC – CÁC NHÓM MẸO CÒN LẠI (HOÀN CHỈNH)
+
+### A. NHÓM KHÁI NIỆM – THUẬT NGỮ (học nhanh)
+
+| Thuật ngữ / khái niệm | Mẹo ghi nhớ | Ghi chú |
+|---|---|---|
+| **CNXH khoa học** | Khác với CNXH không tưởng – có cơ sở khoa học (chủ nghĩa Mác-Lênin) | Thường xuất hiện nhiều câu hỏi |
+| **Giai cấp công nhân** | Là lực lượng tiên phong, lãnh đạo cách mạng trong thời đại ngày nay | Liên quan Q320, Q337 |
+| **Dân tộc** | 5 đặc trưng cơ bản (có cộng đồng ngôn ngữ, lãnh thổ, kinh tế, văn hóa, ý thức) | Q26 – nhớ "5" |
+| **Tôn giáo** | 3 nguồn gốc: kinh tế – xã hội, nhận thức, tâm lý | Q358 – nhớ "3" |
+| **Gia đình** | 4 chức năng cơ bản; xây dựng gia đình cần 4 phương hướng | Q37, Q350 – nhớ "4" |
+| **Nhà nước pháp quyền XHCN Việt Nam** | Do nhân dân, vì nhân dân, dưới sự lãnh đạo của Đảng | Thường gặp trong câu nhiều đáp án |
+
+### B. CÁC MỐI LIÊN HỆ THƯỜNG GẶP
+
+| Cặp mối liên hệ | Mẹo |
+|---|---|
+| **Mác – Ăngghen khởi xướng** → **Lênin bổ sung** học thuyết hình thái KT-XH | Q329 |
+| **Cách mạng Tháng Mười Nga 1917** → Nền dân chủ XHCN đầu tiên, đưa CNXH từ lý luận thành hiện thực | Q301, Q344 |
+| **Công xã Pari 1871** → Cách mạng vô sản đầu tiên trên thế giới | Q397 |
+| **Đại hội VI (1986)** → Khởi xướng công cuộc Đổi mới | Q441 |
+| **Cương lĩnh 2011 (ĐH XI)** → 8 phương hướng + đặc trưng "Dân giàu, nước mạnh, dân chủ, công bằng, văn minh" là đặc trưng **thứ 1** | Q166, Q173 |
+
+### C. BẢNG TRA NHANH – DÀNH CHO PHÚT CUỐI
+
+| Tình huống | Cách xử lý |
+|---|---|
+| **Không nhớ đáp án** | Ưu tiên **A** (gần 40% bộ đề), sau đó loại đáp án vô lý |
+| **"Tất cả các đáp án đều đúng"** | Chỉ chọn nếu **chắc chắn cả 4** đều đúng (tỉ lệ đúng ~41%) |
+| **"Đâu không phải/không đúng"** | Đọc thành câu khẳng định ngược → tìm câu **sai** |
+| **Nhiều đáp án (2–3)** | Đếm số yêu cầu, **không chọn thiếu**, **không chọn thừa** |
+| **Câu có con số 1,3,4,5,6,8** | So sánh nhanh với bảng nhóm **SỐ** ở mục 1 |
+| **Câu có tên người** | Tra nhanh bảng nhóm **NGƯỜI** ở mục 2 |
+
+**Lời khuyên:** Mỗi lần chỉ cần ôn **3 nhóm cốt lõi: SỐ – NGƯỜI – THỜI GIAN** + **câu sai**. Đó là cách học thông minh nhất cho bộ 441 câu này!
+
+
+---
+
 ## 4. MẸO HỌC THUỘC NHANH CHO 4 NGÀY ÔN THI
 
 ### Kế hoạch 4 ngày (cực hiệu quả)
