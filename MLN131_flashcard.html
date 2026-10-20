@@ -901,13 +901,25 @@ function jump(d){
 function fPick(i){
   if (!cur || fRes !== null) return;
   const at = fPicked.indexOf(i);
-  if (at >= 0) fPicked.splice(at, 1);
-  else {
-    if (fPicked.length >= cur.a.length){
-      if (cur.a.length === 1) fPicked.length = 0;   // 1 dap an: bam cai khac = doi lua chon
-      else fPicked.shift();                          // nhieu dap an: bam qua so luong -> bo cai cu nhat
+  if (at >= 0) {
+    fPicked.splice(at, 1);
+  } else {
+    if (cur.a.length === 1) {
+      fPicked = [i];
+    } else {
+      if (fPicked.length >= cur.a.length) {
+        fPicked.shift();
+      }
+      fPicked.push(i);
     }
-    fPicked.push(i);
+  }
+  if (cur.a.length === 1 && fPicked.length === 1) {
+    fCheck();
+    return;
+  }
+  if (cur.a.length > 1 && fPicked.length === cur.a.length) {
+    fCheck();
+    return;
   }
   $("fOpts").innerHTML = pickHTML(cur, fPicked, null, true);
   $("fPickInfo").textContent = cur.a.length > 1
