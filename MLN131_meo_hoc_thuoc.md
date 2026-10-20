@@ -303,3 +303,28 @@ Quy tắc: tìm đáp án SAI.
 | Nghi ngờ giữa 2 đáp án | Chọn theo nhóm chủ đề + loại trừ |
 | Hết thời gian | Dùng quy tắc A + kiểm tra nhanh câu nhiều đáp án |
 | Câu khó | Đánh dấu và làm sau, tránh mất thời gian |
+
+
+
+
+## PHU LUC II - MEO THEO TUNG NHOM TRONG FLASHCARD
+
+### Bang tom tat cac nhom
+| Nhom | So cau | Meo hoc |
+|---|---|---|
+| Tat ca 441 | 441 | On deu, uu tien cau sai truoc |
+| Cau tra loi la SO | 15 | Hoc theo bang muc 1. Nho bo so 1,3,4,5,6,8 |
+| Cau "ai - noi gi" | 19 | Hoc bang trich dan nguoi noi (Ho Chi Minh, Lenin, Mac-Angghen) |
+| Cau thoi gian / nam | 39 | Hoc theo dong thoi gian. 2025-A, 2030-B, 2045-C |
+| Ton giao | 32 | 3 nguon goc, quan diem, vai tro ton giao |
+| Gia dinh - Hon nhan | 64 | 4 chuc nang, 4 phuong huong. Thuoc so 4 |
+| Dan toc | 35 | 5 dac trung dan toc, phan biet nghia rong/nghia hep |
+| Lien minh - Cach mang - Dang | 58 | Dang lanh dao, lien minh giai cap, muc tieu |
+| Giai cap cong nhan | 48 | Su menh lich su, dac diem, vai tro lanh dao |
+| Dan chu - Nha nuoc | 62 | Nha nuoc phap quyen XHCN, dan chu XHCN |
+| Tac pham - Tu tuong | 33 | Tac pham quan trong, trich dan noi tieng |
+| Qua do - Chu nghia XH | 64 | Dac trung CNXH (6), thoi ky qua do |
+| Kinh te - Co cau | 23 | Co cau kinh te, thanh phan kinh te qua do |
+| Cau tron | 22 | On lai nhung dang con yeu |
+
+Loi khuyen: Moi ngay chon 1-2 nhom yeu nhat trong Flashcard va hoc den khi het the can on.
