@@ -55,8 +55,8 @@ h1{font-size:1.3rem;margin:4px 0 2px}
 .hint{color:var(--muted);font-size:.79rem;text-align:center;margin-top:auto;padding-top:10px}
 .opt.correct{background:#dbeafe;border-color:#93c5fd;color:var(--blue);font-weight:800}
 .opt.correct b{color:var(--blue)}
-/* ---------- che do tu luan: bam chon dap an ---------- */
-.opt.pick{cursor:pointer;user-select:none;display:flex;align-items:flex-start;gap:8px}
+/* ---------- bam chon dap an ngay tren the lat ---------- */
+.opt.pick{cursor:pointer;user-select:none;display:flex;align-items:flex-start;gap:8px;position:relative}
 .opt.pick:hover:not(.done){background:#eef2ff;border-color:#c7d2fe}
 .opt.pick .box{flex:0 0 17px;width:17px;height:17px;margin-top:2px;border:1.5px solid #cbd5e1;border-radius:5px;
                background:#fff;display:flex;align-items:center;justify-content:center;font-size:.68rem;color:#fff;font-weight:900}
@@ -73,7 +73,22 @@ h1{font-size:1.3rem;margin:4px 0 2px}
 .opt.pick.miss .box{border-color:#eab308}
 .opt.pick.miss .box::after{content:"!";color:#a16207}
 .opt.pick.done{cursor:default}
+.opt.pick .rlabel{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:.66rem;font-weight:900;
+                  border-radius:6px;padding:2px 7px;letter-spacing:.2px}
+.opt.pick.good .rlabel{background:#16a34a;color:#fff}
+.opt.pick.bad  .rlabel{background:#e11d48;color:#fff}
+.opt.pick.miss .rlabel{background:#facc15;color:#713f12}
 .qopts{cursor:default}
+/* thanh "Kiem tra" nam trong the lat */
+.fbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin:2px 0 4px}
+.fbar button{font:inherit;font-weight:800;font-size:.87rem;padding:9px 16px;border-radius:11px;border:1px solid var(--line);
+             background:#fff;color:#334155;cursor:pointer}
+.fbar button:hover{background:#f1f5f9}
+.fbar button.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.fbar button.pri:hover{filter:brightness(1.08)}
+.fbar button:disabled{opacity:.45;cursor:not-allowed}
+.fbar button.okgo:not(:disabled){background:#16a34a;border-color:#16a34a;color:#fff}
+.pinfo{font-size:.8rem;font-weight:700;color:#64748b}
 .qbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;margin:0 0 12px}
 .qbar button{font:inherit;font-weight:800;font-size:.87rem;padding:9px 15px;border-radius:11px;border:1px solid var(--line);
              background:#fff;color:#334155;cursor:pointer}
@@ -110,6 +125,8 @@ h1{font-size:1.3rem;margin:4px 0 2px}
 .srsbtn.good{background:var(--good)}.srsbtn.easy{background:var(--easy)}
 .srsbtn:hover{filter:brightness(1.09)}
 .srsbtn:disabled{background:#cbd5e1;cursor:not-allowed}
+.srsbtn.pulse{outline:3px solid #0f172a;outline-offset:3px;animation:pl .9s ease-in-out infinite alternate}
+@keyframes pl{from{transform:translateY(0)}to{transform:translateY(-4px)}}
 .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
 button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:10px 14px;font-weight:700;
        color:#fff;background:var(--brand)}
@@ -233,7 +250,12 @@ button.sm{padding:8px 11px;font-size:.84rem}
         <div class="tagrow" id="fTags"></div>
         <div class="q" id="fQ"></div>
         <div id="fOpts"></div>
-        <div class="hint">💡 Bấm thẻ (hoặc <b>Space</b>) để xem đáp án rồi chọn mức độ nhớ</div>
+        <div id="fVerdict" class="qverdict" style="display:none"></div>
+        <div class="fbar" id="fBar">
+          <button id="fCheck" class="pri">✔️ Kiểm tra</button>
+          <span id="fPickInfo" class="pinfo"></span>
+        </div>
+        <div class="hint" id="fHint">💡 Bấm chọn đáp án rồi bấm <b>Kiểm tra</b> (hoặc <b>Space</b>/<b>Enter</b>)</div>
       </div>
       <div class="face back">
         <div class="tagrow" id="bTags"></div>
@@ -286,14 +308,14 @@ button.sm{padding:8px 11px;font-size:.84rem}
     (nhớ càng chắc → càng lâu mới gặp lại).<br>
     <b>✅ Tự luận:</b> cùng bộ thẻ, nhưng bạn <i>bấm chọn đáp án</i> rồi bấm <b>Kiểm tra</b> — đúng/sai hiện ra ngay
     (đáp án đúng tô xanh, chỗ bạn chọn sai tô đỏ, chỗ đúng mà bạn bỏ sót tô vàng). Vẫn ghi vào lịch ôn:
-    <b>sai</b> = Lại · <b>đúng một phần</b> = Khó · <b>đúng</b> = Được · <b>nhanh &amp; đúng</b> (dưới 4 giây) = Dễ.<br>
-    <b>Công thức lặp lại:</b> thẻ mới đi qua <i>bước học</i> (mặc định 1 → 10 phút) rồi <i>tốt nghiệp</i> 1 ngày.
+    <b>sai</b> = Lại · <b>đúng một phần</b> = Khó · <b>đúng</b> = Được · <b>nhanh &amp; đúng</b> (dưới 4 giây) = Dễ.<br>    <b>Công thức lặp lại:</b> thẻ mới đi qua <i>bước học</i> (mặc định 1 → 10 phút) rồi <i>tốt nghiệp</i> 1 ngày.
     Khi đã ở vòng ôn tập, mỗi lần trả lời: <b>Được</b> = khoảng cách × hệ số dễ · <b>Khó</b> = × 1,2 ·
     <b>Dễ</b> = × hệ số dễ × 1,3 · <b>Lại</b> = quên, hệ số dễ −20 % và học lại sau 10 phút.
     Khoảng cách bị chặn trong khoảng <i>nhỏ nhất</i> → <i>lớn nhất</i> (và không vượt quá 🎯 ngày thi nếu bạn đặt).<br>
     <b>Ôn gấp:</b> nếu chỉ còn vài ngày, mở ⚙️ Cài đặt bấm <b>⏳ Ôn gấp 4 ngày</b> hoặc <b>🔥 Ôn gấp 2 ngày</b> —
     app sẽ hạ hệ số dễ và chặn khoảng cách để thẻ quay lại liên tục trong thời gian đó.<br>
-    <b>Phím tắt:</b> <kbd>Space</kbd> lật thẻ · <kbd>1</kbd> Lại · <kbd>2</kbd> Khó · <kbd>3</kbd> Được · <kbd>4</kbd> Dễ ·
+    <b>Phím tắt:</b> <kbd>1</kbd>–<kbd>4</kbd> chọn đáp án · <kbd>Space</kbd>/<kbd>Enter</kbd> kiểm tra rồi lật thẻ ·
+    sau khi kiểm tra <kbd>1</kbd> Lại · <kbd>2</kbd> Khó · <kbd>3</kbd> Được · <kbd>4</kbd> Dễ ·
     <kbd>←</kbd> <kbd>→</kbd> xem trước/sau · <kbd>Z</kbd> hoàn tác · <kbd>S</kbd> trộn<br>
     Tiến độ lưu trên máy (localStorage) — đóng tab mở lại vẫn còn nguyên lịch ôn.
   </div>
@@ -363,6 +385,8 @@ let gid = "tatca", mode = "sched", freeOrder = null, freePos = 0, undoStack = []
 /* — che do tu luan — */
 let qOrder = null, qPos = 0, qPicked = {}, qRes = {};
 let qStat = { ok: 0, no: 0, skip: 0 }, qStart = 0;
+/* — bam chon dap an ngay tren the lat (dung chung lich on voi che do tu luan) — */
+let fPicked = [], fRes = null, fStart = 0;
 
 function loadJSON(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }
 function saveJSON(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
@@ -564,15 +588,24 @@ function optionsHTML(c, showAns){
   }).join("");
 }
 /* che do tu luan: o chon duoc, co hop checkbox */
-function pickHTML(c, picked, res){
+function pickHTML(c, picked, res, mark){
   return c.o.map(function(t, i){
-    let cls = "opt pick";
-    if (res === 1) cls += picked.indexOf(i) >= 0 ? " good done" : (c.a.indexOf(LETTER[i]) >= 0 ? " miss done" : " done");
-    else if (res === 2) cls += c.a.indexOf(LETTER[i]) >= 0 ? " good done" : " done";   // da xem dap an: chi to xanh, khong trach
-    else if (res === 0) cls += picked.indexOf(i) >= 0 ? " bad done" : (c.a.indexOf(LETTER[i]) >= 0 ? " miss done" : " done");
-    else if (picked.indexOf(i) >= 0) cls += " on";
+    let cls = "opt pick", rl = "";
+    const isAns = c.a.indexOf(LETTER[i]) >= 0;
+    if (res === 1) {
+      if (picked.indexOf(i) >= 0){ cls += " good done"; rl = "ĐÚNG"; }
+      else if (isAns){ cls += " miss done"; rl = "BỎ SÓT"; }
+      else cls += " done";
+    } else if (res === 2) {
+      if (isAns){ cls += " good done"; rl = "ĐÁP ÁN"; } else cls += " done";
+    } else if (res === 0) {
+      if (picked.indexOf(i) >= 0){ cls += " bad done"; rl = "SAI"; }
+      else if (isAns){ cls += " miss done"; rl = "ĐÁP ÁN"; }
+      else cls += " done";
+    } else if (picked.indexOf(i) >= 0) cls += " on";
     return '<div class="' + cls + '" data-i="' + i + '"><span class="box"></span><span class="txt"><b>'
-      + LETTER[i] + '.</b> ' + esc(t) + '</span></div>';
+      + LETTER[i] + '.</b> ' + esc(t) + '</span>'
+      + (mark && rl ? '<span class="rlabel">' + rl + '</span>' : "") + '</div>';
   }).join("");
 }
 /* so sanh dap an nguoi hoc chon voi dap an dung */
@@ -638,6 +671,10 @@ function renderDone(extra){
   $("card").classList.remove("flip");
   $("card2").classList.remove("flip");
   $("fTags").innerHTML = ""; $("fOpts").innerHTML = "";
+  $("fVerdict").style.display = "none";
+  $("fBar").style.display = "none";
+  $("fHint").innerHTML = "";
+  ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).classList.remove("pulse"); });
   const quiz = (mode === "quiz");
   $("fQ").innerHTML = '<div class="done"><div class="big">' + (quiz ? "🏁" : "🎉") + '</div><b>'
     + (quiz ? "Xong vòng tự luận!" : "Hết thẻ đến hạn!") + '</b><p>' + extra + '</p></div>';
@@ -674,11 +711,18 @@ function render(){
   ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).disabled = false; });
   const st = stateOf(card.n);
   $("card").classList.remove("flip");
+  fPicked = []; fRes = null; fStart = Date.now();
   setTimeout(function(){
     const tg = tagHTML(card);
     $("fTags").innerHTML = tg; $("bTags").innerHTML = tg;
     $("fQ").textContent = card.q;
-    $("fOpts").innerHTML = optionsHTML(card);
+    $("fOpts").innerHTML = pickHTML(card, fPicked, null, true);
+    $("fVerdict").style.display = "none";
+    $("fCheck").disabled = false; $("fCheck").textContent = "✔️ Kiểm tra";
+    $("fCheck").className = "pri";
+    $("fPickInfo").textContent = card.a.length > 1 ? "chọn đủ " + card.a.length + " đáp án" : "";
+    $("fBar").style.display = "";
+    $("fHint").innerHTML = "💡 Bấm chọn đáp án rồi bấm <b>Kiểm tra</b> (hoặc <b>Space</b>/<b>Enter</b>)";
     $("bQ").textContent = card.q;
     $("bOpts").innerHTML = optionsHTML(card, true);
     if (st.st === 0) $("bInfo").textContent = "Thẻ mới · chưa có hệ số dễ";
@@ -826,11 +870,18 @@ function renderFree(card){
   ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).disabled = false; });
   const st = stateOf(card.n);
   $("card").classList.remove("flip");
+  fPicked = []; fRes = null; fStart = Date.now();
   setTimeout(function(){
     const tg = tagHTML(card);
     $("fTags").innerHTML = tg; $("bTags").innerHTML = tg;
     $("fQ").textContent = card.q;
-    $("fOpts").innerHTML = optionsHTML(card);
+    $("fOpts").innerHTML = pickHTML(card, fPicked, null, true);
+    $("fVerdict").style.display = "none";
+    $("fCheck").disabled = false; $("fCheck").textContent = "✔️ Kiểm tra";
+    $("fCheck").className = "pri";
+    $("fPickInfo").textContent = card.a.length > 1 ? "chọn đủ " + card.a.length + " đáp án" : "";
+    $("fBar").style.display = "";
+    $("fHint").innerHTML = "💡 Bấm chọn đáp án rồi bấm <b>Kiểm tra</b> (hoặc <b>Space</b>/<b>Enter</b>)";
     $("bQ").textContent = card.q;
     $("bOpts").innerHTML = optionsHTML(card, true);
     $("bInfo").textContent = "Chế độ tự do · chưa tính vào lịch ôn nếu bạn không cần";
@@ -844,6 +895,47 @@ function jump(d){
   if (mode !== "free") return;
   freePos = Math.min(freeOrder.length - 1, Math.max(0, freePos + d));
   refresh();
+}
+
+/* ================= BAM CHON DAP AN TREN THE LAT ================= */
+function fPick(i){
+  if (!cur || fRes !== null) return;
+  const at = fPicked.indexOf(i);
+  if (at >= 0) fPicked.splice(at, 1);
+  else {
+    if (fPicked.length >= cur.a.length){
+      if (cur.a.length === 1) fPicked.length = 0;   // 1 dap an: bam cai khac = doi lua chon
+      else fPicked.shift();                          // nhieu dap an: bam qua so luong -> bo cai cu nhat
+    }
+    fPicked.push(i);
+  }
+  $("fOpts").innerHTML = pickHTML(cur, fPicked, null, true);
+  $("fPickInfo").textContent = cur.a.length > 1
+    ? "đã chọn " + fPicked.length + "/" + cur.a.length + " đáp án"
+    : (fPicked.length ? "đã chọn " + LETTER[fPicked[0]] : "");
+}
+/* cham ngay tren the: to xanh/do/vang + hien ket qua */
+function fCheck(){
+  if (!cur || fRes !== null) return;
+  const picked = fPicked.slice().sort(function(a, b){ return a - b; });
+  const r = comparePick(cur, picked);
+  const dur = Date.now() - (fStart || Date.now());
+  const rating = r.ok ? (dur <= 4000 ? "easy" : "good")
+                      : (picked.length === 0 ? "again" : (r.extra.length === 0 ? "hard" : "again"));
+  fRes = { ok: r.ok, r: r, rating: rating };
+  $("fOpts").innerHTML = pickHTML(cur, picked, r.ok ? 1 : 0, true);
+  $("fVerdict").style.display = "";
+  $("fVerdict").className = "qverdict " + (r.ok ? "ok" : (picked.length > 0 && r.extra.length === 0 ? "mid" : "no"));
+  $("fVerdict").innerHTML = verdictText(cur, picked, r)
+    + '<span class="how">Chấm sẵn mức <b>' + ({ easy: "Dễ", good: "Được", hard: "Khó", again: "Lại" })[rating]
+    + "</b> — hoặc bấm mức khác ở dưới. <kbd>Space</kbd>/lật thẻ để xem mặt sau, rồi bấm mức độ nhớ.</span>";
+  $("fCheck").textContent = "↻ Chấm lại";
+  $("fCheck").className = "";
+  $("fPickInfo").textContent = "";
+  $("fHint").innerHTML = "💡 <b>Giờ bấm 1 trong 4 mức độ nhớ ở dưới</b> (hoặc <kbd>1</kbd>–<kbd>4</kbd>) để hẹn ngày gặp lại";
+  /* tu dong danh dau the vao dung muc vua cham (neu ban bam nut tuong ung la khop) */
+  ["bAgain","bHard","bGood","bEasy"].forEach(function(id){ $(id).classList.remove("pulse"); });
+  $({ again: "bAgain", hard: "bHard", good: "bGood", easy: "bEasy" }[rating]).classList.add("pulse");
 }
 function updatePrintInfo(n){
   if (n === undefined) n = pool().length;
@@ -1139,7 +1231,37 @@ $("tocBody").onclick = function(e){
   }
 };
 $("tocBox").addEventListener("toggle", function(){ if ($("tocBox").open) renderToc(); });
-$("card").onclick = function(){ $("card").classList.toggle("flip"); };
+$("card").onclick = function(e){
+  /* bam vao dap an hoac nut Kiem tra -> khong lat the */
+  let t = e.target;
+  while (t && t !== this){
+    if (t.id === "fCheck") return;
+    if (t.className && String(t.className).indexOf("opt") >= 0) return;
+    if (t.className && String(t.className).indexOf("fbar") >= 0) return;
+    t = t.parentNode;
+  }
+  this.classList.toggle("flip");
+};
+$("fCheck").onclick = function(){
+  if (!cur) return;
+  if (fRes === null) fCheck();
+  else { fRes = null; fPicked = []; fStart = Date.now(); $("fOpts").innerHTML = pickHTML(cur, [], null, true);
+         $("fVerdict").style.display = "none"; $("fCheck").textContent = "✔️ Kiểm tra"; $("fCheck").className = "pri";
+         $("fHint").innerHTML = "💡 Bấm chọn đáp án rồi bấm <b>Kiểm tra</b> (hoặc <b>Space</b>/<b>Enter</b>)";
+         $("fPickInfo").textContent = cur.a.length > 1 ? "chọn đủ " + cur.a.length + " đáp án" : "";
+         ["bAgain","bHard","bGood","bEasy"].forEach(function(id){ $(id).classList.remove("pulse"); }); }
+};
+$("fOpts").onclick = function(e){
+  if (!cur || fRes !== null) return;
+  const self = this;
+  let t = e.target;
+  while (t && t !== self){
+    if (t.getAttribute && t.getAttribute("data-i") !== null && t.getAttribute("data-i") !== undefined){
+      fPick(+t.getAttribute("data-i")); return;
+    }
+    t = t.parentNode;
+  }
+};
 $("bAgain").onclick = function(){ rate("again"); };
 $("bHard").onclick = function(){ rate("hard"); };
 $("bGood").onclick = function(){ rate("good"); };
@@ -1252,7 +1374,11 @@ document.addEventListener("keydown", function(e){
     if (e.key === "/"){ e.preventDefault(); $("listSearch").focus(); }
     return;
   }
-  if (e.code === "Space"){ e.preventDefault(); $("card").classList.toggle("flip"); }
+  if (e.code === "Space" || e.key === "Enter"){
+    e.preventDefault();
+    if (fRes === null) fCheck(); else $("card").classList.toggle("flip");
+  }
+  else if (fRes === null && (e.key === "1" || e.key === "2" || e.key === "3" || e.key === "4")){ fPick(+"1234".indexOf(e.key)); }
   else if (e.key === "1") rate("again");
   else if (e.key === "2") rate("hard");
   else if (e.key === "3") rate("good");
