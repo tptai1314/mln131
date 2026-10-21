@@ -83,14 +83,6 @@ h1{font-size:1.3rem;margin:4px 0 2px}
 .fbar button.pri:hover{filter:brightness(1.08)}
 .fbar button:disabled{opacity:.45;cursor:not-allowed}
 .pinfo{font-size:.8rem;font-weight:700;color:#64748b}
-.qbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;margin:0 0 12px}
-.qbar button{font:inherit;font-weight:800;font-size:.87rem;padding:9px 15px;border-radius:11px;border:1px solid var(--line);
-             background:#fff;color:#334155;cursor:pointer}
-.qbar button:hover{background:#f1f5f9}
-.qbar button.pri{background:var(--brand);border-color:var(--brand);color:#fff}
-.qbar button.pri:hover{filter:brightness(1.08)}
-.qbar button:disabled{opacity:.45;cursor:not-allowed}
-.qbar #qNext:not(:disabled){background:#16a34a;border-color:#16a34a;color:#fff}
 .qverdict{font-size:.92rem;font-weight:800;padding:11px 14px;border-radius:12px;line-height:1.5;margin:2px 0 10px}
 .qverdict.ok{background:#dcfce7;color:#166534;border:1.5px solid #4ade80}
 .qverdict.no{background:#ffe4e6;color:#9f1239;border:1.5px solid #fb7185}
@@ -101,11 +93,6 @@ h1{font-size:1.3rem;margin:4px 0 2px}
 .qverdict .how kbd{background:#fff;border:1px solid #cbd5e1;border-radius:5px;padding:1px 6px;font:inherit;font-size:.75rem;
                    color:#334155;box-shadow:0 1px 0 #cbd5e1}
 .qhint{font-size:.78rem;color:#64748b;font-weight:600;margin-left:4px}
-.qcount{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:center;margin-bottom:10px;font-size:.84rem;color:#475569}
-.qcount b{font-size:1.02rem}
-.qcount .pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px}
-.qcount .pill.g b{color:#15803d}.qcount .pill.r b{color:#b91c1c}.qcount .pill.s b{color:#1d4ed8}
-.qpct{margin-left:auto;font-weight:800}
 .qdone{text-align:center;padding:24px 10px}
 .qdone .big{font-size:3rem}
 .qdone h3{margin:8px 0;font-size:1.15rem;color:#0f172a}
@@ -175,7 +162,6 @@ button.sm{padding:8px 11px;font-size:.84rem}
   <div class="tabs">
     <button class="tab on" id="tabSched">🎯 Học hôm nay (theo lịch)</button>
     <button class="tab" id="tabFree">📚 Học tự do</button>
-    <button class="tab" id="tabQuiz">✅ Chỉ trắc nghiệm</button>
     <button class="tab" id="tabList">📋 Danh sách câu hỏi</button>
   </div>
 
@@ -184,26 +170,6 @@ button.sm{padding:8px 11px;font-size:.84rem}
 
   <div class="bar" id="progBar"><i id="bar"></i></div>
   <div class="meta" id="metaRow"><span id="mPos">—</span><span id="mStat"></span></div>
-
-  <div id="qcount" class="qcount" style="display:none"></div>
-
-  <div class="scene" id="scene2" style="display:none">
-    <div class="card" id="card2" style="display:contents">
-      <div class="face front">
-        <div class="tagrow" id="qTags"></div>
-        <div class="q" id="qQ"></div>
-        <div class="qopts" id="qOpts"></div>
-        <div id="qVerdict" class="qverdict" style="display:none"></div>
-        <div class="hint" id="qHint">Bấm vào đáp án bạn chọn (câu nhiều đáp án thì bấm đủ số) rồi bấm <b>Kiểm tra</b></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="qbar" id="qbar" style="display:none">
-    <button id="qCheck" class="pri">✔️ Kiểm tra</button>
-    <button id="qNext" disabled>Câu tiếp ▶</button>
-    <button id="qSkip" class="ghost">⏭️ Bỏ qua</button>
-  </div>
 
   <div class="scene" id="scene">
     <div class="card" id="card">
@@ -236,14 +202,6 @@ button.sm{padding:8px 11px;font-size:.84rem}
     <button class="ghost sm" id="next">Sau ▶</button>
   </div>
 
-  <div class="controls" id="quizControls" style="display:none">
-    <button class="ghost sm" id="qShuf">🔀 Trộn thứ tự</button>
-    <button class="ghost sm" id="qReveal">👁️ Hiện đáp án</button>
-    <button class="ghost sm" id="qRestart">♻️ Làm lại từ đầu</button>
-    <button class="ghost sm" id="qPrev">◀ Trước</button>
-    <button class="ghost sm" id="qNext2">Sau ▶</button>
-  </div>
-
   <div id="listPanel" style="display:none">
     <details id="tocBox" style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 14px;margin-bottom:12px">
       <summary style="font-weight:800;font-size:.9rem;cursor:pointer">📑 Mục lục – mỗi danh mục gồm những câu nào (bấm số câu để xem)</summary>
@@ -262,8 +220,7 @@ button.sm{padding:8px 11px;font-size:.84rem}
     (đáp án đúng tô xanh, chỗ bạn chọn sai tô đỏ, chỗ đúng mà bạn bỏ sót tô vàng) → bấm 1 trong 4 mức độ nhớ
     để app hẹn ngày gặp lại (nhớ càng chắc → càng lâu mới gặp lại).<br>
     <b>Điểm tự động:</b> <b>sai</b> = Lại · <b>đúng một phần</b> = Khó · <b>đúng</b> = Được · <b>nhanh &amp; đúng</b> (dưới 4 giây) = Dễ.<br>
-    <b>Ba chế độ:</b> 🎯 <b>Học hôm nay</b> (theo lịch ôn) · 📚 <b>Học tự do</b> (đi hết nhóm một vòng, có Trước/Sau) ·
-    ✅ <b>Chỉ trắc nghiệm</b> (làm một vòng liên tục, có bảng đúng/sai và tỉ lệ, phím tắt riêng).<br>
+    <b>Hai chế độ:</b> 🎯 <b>Học hôm nay</b> (theo lịch ôn) · 📚 <b>Học tự do</b> (đi hết nhóm một vòng, có Trước/Sau).<br>
     <b>Công thức lặp lại:</b> câu mới đi qua <i>bước học</i> (mặc định 1 → 10 phút) rồi <i>tốt nghiệp</i> 1 ngày.
     Khi đã ở vòng ôn tập, mỗi lần trả lời: <b>Được</b> = khoảng cách × hệ số dễ · <b>Khó</b> = × 1,2 ·
     <b>Dễ</b> = × hệ số dễ × 1,3 · <b>Lại</b> = quên, hệ số dễ −20 % và học lại sau 10 phút.
@@ -321,10 +278,7 @@ migrateOld();
 
 let gid = "tatca", mode = "sched", freeOrder = null, freePos = 0, undoStack = [], cur = null, tick = null;
 let nextScheduled = false;
-/* — che do tu luan — */
-let qOrder = null, qPos = 0, qPicked = {}, qRes = {};
-let qStat = { ok: 0, no: 0, skip: 0 }, qStart = 0;
-/* — bam chon dap an ngay tren the lat (dung chung lich on voi che do tu luan) — */
+/* — bam chon dap an roi bam Kiem tra, sau do chon do thuoc — */
 let fPicked = [], fRes = null, fStart = 0;
 
 function loadJSON(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }
@@ -614,6 +568,14 @@ function renderDone(extra){
   $("mPos").textContent = "0 câu đến hạn";
   $("mStat").textContent = "";
 }
+/* hien lai day du khung cau hoi (the + 4 nut do thuoc + thanh dieu khien) */
+function showChrome(){
+  $("fBar").style.display = "";
+  $("srs").style.display = "";
+  $("mainControls").style.display = "";
+  $("progBar").style.display = "";
+  $("fHint").style.display = "";
+}
 function render(){
   if (nextScheduled){ nextScheduled = false; renderDone("Câu đã được hẹn ngày gặp lại."); return; }
   rollDay();
@@ -633,6 +595,7 @@ function render(){
     return;
   }
   ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).disabled = false; });
+  showChrome();
   const st = stateOf(card.n);
   fPicked = []; fRes = null; fStart = Date.now();
   setTimeout(function(){
@@ -644,7 +607,6 @@ function render(){
     $("fCheck").disabled = false; $("fCheck").textContent = "✔️ Kiểm tra";
     $("fCheck").className = "pri";
     $("fPickInfo").textContent = card.a.length > 1 ? "chọn đủ " + card.a.length + " đáp án" : "";
-    $("fBar").style.display = "";
     $("fHint").innerHTML = "💡 Bấm chọn đáp án rồi bấm <b>Kiểm tra</b> (hoặc <b>Space</b>/<b>Enter</b>)";
     ["bAgain","bHard","bGood","bEasy"].forEach(function(id){ $(id).classList.remove("pulse"); });
     $("lAgain").textContent = previewLabel(st, "again");
@@ -767,7 +729,6 @@ function buildFree(){
 }
 function refresh(){
   if (mode === "list"){ renderList(); return; }
-  if (mode === "quiz"){ renderQuiz(); return; }
   if (mode === "free"){
     buildFree();
     if (freePos >= freeOrder.length){
@@ -787,6 +748,7 @@ function renderFree(card){
   $("stats").innerHTML = statsHTML();
   cur = card;
   ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).disabled = false; });
+  showChrome();
   const st = stateOf(card.n);
   fPicked = []; fRes = null; fStart = Date.now();
   setTimeout(function(){
@@ -798,7 +760,6 @@ function renderFree(card){
     $("fCheck").disabled = false; $("fCheck").textContent = "✔️ Kiểm tra";
     $("fCheck").className = "pri";
     $("fPickInfo").textContent = card.a.length > 1 ? "chọn đủ " + card.a.length + " đáp án" : "";
-    $("fBar").style.display = "";
     $("fHint").innerHTML = "💡 Bấm chọn đáp án rồi bấm <b>Kiểm tra</b> (hoặc <b>Space</b>/<b>Enter</b>)";
     ["bAgain","bHard","bGood","bEasy"].forEach(function(id){ $(id).classList.remove("pulse"); });
     $("lAgain").textContent = previewLabel(st, "again");
@@ -865,195 +826,33 @@ function fCheck(){
   ["bAgain","bHard","bGood","bEasy"].forEach(function(id){ $(id).classList.remove("pulse"); });
   $({ again: "bAgain", hard: "bHard", good: "bGood", easy: "bEasy" }[rating]).classList.add("pulse");
 }
-/* ================= CHE DO TU LUAN (chon dap an, check ngay) ================= */
-function buildQuiz(){
-  qOrder = shuffle(pool());
-  qPicked = {}; qRes = {}; qPos = 0; qStart = Date.now();
-  qStat = { ok: 0, no: 0, skip: 0 };
-}
-function qCard(){ return qOrder ? qOrder[qPos] : null; }
-function qStatsHTML(){
-  return '<span class="pill s">Câu <b>' + Math.min(qPos + 1, qOrder ? qOrder.length : 0) + '</b>/' + (qOrder ? qOrder.length : 0) + '</span>'
-    + '<span class="pill g">Đúng <b>' + qStat.ok + '</b></span>'
-    + '<span class="pill r">Sai <b>' + qStat.no + '</b></span>'
-    + '<span class="pill">Bỏ qua <b>' + qStat.skip + '</b></span>'
-    + '<span class="qpct">' + (qStat.ok + qStat.no ? Math.round(qStat.ok / (qStat.ok + qStat.no) * 100) + "% đúng" : "—") + '</span>';
-}
-function qVerdict(r, c, rating){
-  c = c || qCard();
-  if (!c) return;
-  const picked = (qPicked[c.n] || []).slice().sort(function(a, b){ return a - b; });
-  r = r || comparePick(c, picked);
-  const el = $("qVerdict");
-  el.style.display = "";
-  const cls = r.ok ? "ok" : (picked.length > 0 && r.extra.length === 0 ? "mid" : "no");
-  el.className = "qverdict " + cls;
-  el.innerHTML = verdictText(c, picked, r)
-    + (rating ? '<span class="how">' + verdictHow(r.ok, rating, qOrder && qPos < qOrder.length - 1) + "</span>" : "");
-}
-function renderQuiz(){
-  const c = qCard();
-  const box = $("qcount");
-  box.style.display = "";
-  if (!c){
-    $("scene2").style.display = "none";
-    $("qbar").style.display = "none";
-    $("qcount").innerHTML = "";
-    renderDone("Bạn đã đi hết <b>" + (qOrder ? qOrder.length : 0) + "</b> câu của nhóm này (chế độ ✅ Chỉ trắc nghiệm).<br>"
-      + "Đúng <b style='color:#15803d'>" + qStat.ok + "</b> · sai <b style='color:#b91c1c'>" + qStat.no
-      + "</b> · bỏ qua <b>" + qStat.skip + "</b> · tỉ lệ đúng <b>"
-      + (qStat.ok + qStat.no ? Math.round(qStat.ok / (qStat.ok + qStat.no) * 100) : 0) + "%</b>.<br>"
-      + "Bấm ♻️ <b>Làm lại từ đầu</b> để làm vòng mới, hoặc 🔀 Trộn rồi làm lại.");
-    return;
-  }
-  box.innerHTML = qStatsHTML();
-  $("scene2").style.display = "";
-  $("qbar").style.display = "";
-  $("qTags").innerHTML = tagHTML(c);
-  $("qQ").textContent = c.q;
-  const picked = qPicked[c.n] || [];
-  const res = qRes[c.n];
-  $("qOpts").innerHTML = pickHTML(c, picked, res === undefined ? null : res);
-  $("qHint").innerHTML = res === undefined
-    ? (c.a.length > 1 ? "Câu này chọn <b>" + c.a.length + "</b> đáp án — bấm đủ " + c.a.length + " ô rồi bấm Kiểm tra"
-                      : "Bấm vào đáp án bạn chọn rồi bấm <b>Kiểm tra</b>")
-    : (c.a.length > 1 ? "Câu này chọn <b>" + c.a.length + "</b> đáp án · bấm <b>Câu tiếp ▶</b> để đi tiếp"
-                      : "Bấm <b>Câu tiếp ▶</b> để đi tiếp");
-  $("qCheck").disabled = res !== undefined;
-  $("qNext").disabled = res === undefined;
-  $("qPrev").disabled = qPos <= 0;
-  $("qNext2").disabled = qPos >= qOrder.length - 1;
-  if (res === undefined){ $("qVerdict").style.display = "none"; }
-  else if (res === 2){
-    $("qVerdict").style.display = "";
-    $("qVerdict").className = "qverdict info";
-    $("qVerdict").innerHTML = "👁️ <b>ĐÁP ÁN ĐÚNG: " + answerLetters(c) + "</b>"
-      + '<span class="how">' + verdictHow(true, "reveal", qPos < qOrder.length - 1) + "</span>";
-  }
-  else { qVerdict(comparePick(c, picked), c, null); }
-}
-/* tra loi: cham diem + ghi vao lich on theo do dung */
-function checkQuiz(){
-  const c = qCard();
-  if (!c) return;
-  if (qRes[c.n] !== undefined) return;
-  const picked = (qPicked[c.n] || []).slice().sort(function(a, b){ return a - b; });
-  const r = comparePick(c, picked);
-  const dur = Date.now() - (qStart || Date.now());
-  const st = stateOf(c.n);
-  const before = DB[c.n] ? JSON.parse(JSON.stringify(DB[c.n])) : null;
-  const wasNew = st.st === 0;
-  // "dung mot phan" = khong chon sai o nao (chi thieu) -> kho; co chon sai -> lai
-  const rating = r.ok ? (dur <= 4000 ? "easy" : "good")
-                      : (picked.length === 0 ? "again" : (r.extra.length === 0 ? "hard" : "again"));
-  const nxt = schedule(st, rating, Date.now());
-  DB[c.n] = nxt;
-  rollDay();
-  if (wasNew) DAYMETA.newDone = (DAYMETA.newDone || 0) + 1;
-  undoStack.push({ n: c.n, before: before, dayBefore: DAYMETA.newDone - (wasNew ? 1 : 0) });
-  if (undoStack.length > 200) undoStack.shift();
-  saveJSON("mln131srsDb", DB); saveJSON("mln131srsDay", DAYMETA);
-  qRes[c.n] = r.ok ? 1 : 0;
-  if (r.ok) qStat.ok++; else qStat.no++;
-  qVerdict(r, c, rating);
-  $("qCheck").disabled = true;
-  $("qNext").disabled = false;
-  $("qcount").innerHTML = qStatsHTML();
-  $("qOpts").innerHTML = pickHTML(c, qPicked[c.n], qRes[c.n]);
-  $("qHint").innerHTML = (c.a.length > 1 ? "Câu này chọn <b>" + c.a.length + "</b> đáp án · " : "")
-    + "đã ghi vào lịch ôn: <b>" + rating + "</b> · " + previewLabel(st, rating);
-  $("qTags").innerHTML = tagHTML(c);
-}
-function qPick(i){
-  const c = qCard();
-  if (!c || qRes[c.n] !== undefined) return;
-  const p = qPicked[c.n] || (qPicked[c.n] = []);
-  const at = p.indexOf(i);
-  if (at >= 0) p.splice(at, 1);
-  else {
-    if (p.length >= c.a.length){
-      if (c.a.length === 1) p.length = 0;   // cau 1 dap an: bam cai khac = doi lua chon
-      else p.shift();                        // cau nhieu dap an: bam qua so luong -> bo cai cu nhat
-    }
-    p.push(i);
-  }
-  $("qOpts").innerHTML = pickHTML(c, p, null);
-}
-function qGo(d){
-  if (!qOrder) return;
-  qPos = Math.min(qOrder.length, Math.max(0, qPos + d));   // vuot qua cau cuoi = ket thuc vong
-  renderQuiz();
-}
-function qShuffle(){
-  qOrder = shuffle(pool());
-  qPicked = {}; qRes = {}; qPos = 0; qStart = Date.now();
-  qStat = { ok: 0, no: 0, skip: 0 };
-  renderQuiz();
-}
-
 /* ================= SU KIEN ================= */
 function setMode(m){
   mode = m;
   nextScheduled = false;
   $("tabSched").className = "tab" + (m === "sched" ? " on" : "");
   $("tabFree").className = "tab" + (m === "free" ? " on" : "");
-  $("tabQuiz").className = "tab" + (m === "quiz" ? " on" : "");
   $("tabList").className = "tab" + (m === "list" ? " on" : "");
-  const L = (m === "list"), Q = (m === "quiz");
+  const L = (m === "list");
   $("listPanel").style.display = L ? "block" : "none";
-  $("scene").style.display = (L || Q) ? "none" : "";
-  $("scene2").style.display = Q ? "" : "none";
-  $("srs").style.display = (L || Q) ? "none" : "";
-  $("qbar").style.display = Q ? "" : "none";
-  $("qcount").style.display = (Q && qOrder) ? "" : "none";
-  $("mainControls").style.display = (L || Q) ? "none" : "";
-  $("quizControls").style.display = Q ? "" : "none";
-  $("progBar").style.display = L ? "none" : "";
+  $("scene").style.display = L ? "none" : "";
   $("metaRow").style.display = L ? "none" : "";
-  if (m !== "list" && m !== "quiz"){ $("fBar").style.display = ""; $("fHint").style.display = ""; }
-  else { $("fBar").style.display = "none"; $("fHint").style.display = "none"; }
+  if (L){
+    $("srs").style.display = "none";
+    $("fBar").style.display = "none";
+    $("fHint").style.display = "none";
+    $("mainControls").style.display = "none";
+    $("progBar").style.display = "none";
+  } else {
+    showChrome();
+  }
   if (m === "free") buildFree();
-  if (m === "quiz" && !qOrder) buildQuiz();
   refresh();
 }
 
 $("tabSched").onclick = function(){ setMode("sched"); };
 $("tabFree").onclick = function(){ setMode("free"); };
-$("tabQuiz").onclick = function(){ setMode("quiz"); };
 $("tabList").onclick = function(){ setMode("list"); };
-$("qCheck").onclick = checkQuiz;
-$("qNext").onclick = function(){ qGo(1); };
-$("qSkip").onclick = function(){ const c = qCard(); if (!c) return; qStat.skip++; qGo(1); };
-$("qShuf").onclick = qShuffle;
-$("qRestart").onclick = function(){ qPicked = {}; qRes = {}; qPos = 0; qStart = Date.now(); qStat = { ok: 0, no: 0, skip: 0 }; renderQuiz(); };
-$("qPrev").onclick = function(){ qGo(-1); };
-$("qNext2").onclick = function(){ qGo(1); };
-$("qReveal").onclick = function(){
-  const c = qCard();
-  if (!c) return;
-  qRes[c.n] = 2;                                   // 2 = "da xem dap an", khong tinh diem
-  const picked = qPicked[c.n] || [];
-  $("qOpts").innerHTML = pickHTML(c, picked, 2);   // 2 = hien dap an dung (chi to xanh, khong trach)
-  $("qVerdict").style.display = "";
-  $("qVerdict").className = "qverdict info";
-  $("qVerdict").innerHTML = "👁️ <b>ĐÁP ÁN ĐÚNG: " + answerLetters(c) + "</b>"
-    + '<span class="how">' + verdictHow(true, "reveal", qPos < qOrder.length - 1) + "</span>";
-  $("qCheck").disabled = true;
-  $("qNext").disabled = false;
-  $("qcount").innerHTML = qStatsHTML();
-};
-$("qOpts").onclick = function(e){
-  const c = qCard();
-  if (!c || qRes[c.n] !== undefined) return;
-  const self = this;
-  let t = e.target;
-  while (t && t !== self){
-    if (t.getAttribute && t.getAttribute("data-i") !== null && t.getAttribute("data-i") !== undefined){
-      qPick(+t.getAttribute("data-i")); return;
-    }
-    t = t.parentNode;
-  }
-};
 $("listSearch").oninput = function(){ listQuery = this.value; renderList(); };
 $("listExpand").onclick = function(){ listOpenAll = !listOpenAll; renderList(); };
 $("listView").onclick = function(e){
@@ -1190,17 +989,6 @@ $("exportDb").onclick = function(){
 
 document.addEventListener("keydown", function(e){
   if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA") return;
-  if (mode === "quiz"){
-    if (e.code === "Space"){ e.preventDefault(); const c = qCard(); if (c && qRes[c.n] === undefined) checkQuiz(); else qGo(1); }
-    else if (e.key === "ArrowLeft") qGo(-1);
-    else if (e.key === "ArrowRight") qGo(1);
-    else if (e.key === "1") qPick(0);
-    else if (e.key === "2") qPick(1);
-    else if (e.key === "3") qPick(2);
-    else if (e.key === "4") qPick(3);
-    else if (e.key === "r" || e.key === "R") $("qReveal").onclick();
-    return;
-  }
   if (mode === "list"){
     if (e.key === "/"){ e.preventDefault(); $("listSearch").focus(); }
     return;
