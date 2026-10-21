@@ -577,7 +577,9 @@ function showChrome(){
   $("fHint").style.display = "";
 }
 function render(){
-  if (nextScheduled){ nextScheduled = false; renderDone("Câu đã được hẹn ngày gặp lại."); return; }
+  /* cau vua cham xong van con cau khac -> cu hien tiep; chi khi het that su moi bao "het cau" */
+  const justRated = nextScheduled;
+  nextScheduled = false;
   rollDay();
   $("stats").innerHTML = statsHTML();
   const card = pickNext();
@@ -587,8 +589,8 @@ function render(){
     const inf = nextDueInfo();
     const p = pool();
     const nwLeft = p.filter(function(c){ const s = DB[c.n]; return !s || s.st === 0; }).length;
-    let ex = "Nhóm này không còn câu nào cần học lúc này.";
-    if (inf) ex = "Còn <b>" + inf.n + "</b> câu chưa đến hạn — câu gần nhất sau <b>" + fmt(inf.in) + "</b>.<br>Bấm 🔄 để kiểm tra lại"
+    let ex = justRated ? "Câu đã được hẹn ngày gặp lại." : "Nhóm này không còn câu nào cần học lúc này.";
+    if (inf) ex = (justRated ? "Câu đã được hẹn ngày gặp lại. " : "") + "Còn <b>" + inf.n + "</b> câu chưa đến hạn — câu gần nhất sau <b>" + fmt(inf.in) + "</b>.<br>Bấm 🔄 để kiểm tra lại"
       + (daysToExam() !== null && daysToExam() > 0 ? ", hoặc để đó học môn khác rồi quay lại." : ", hoặc mai quay lại nhé.");
     else if (nwLeft) ex = "Còn <b>" + nwLeft + "</b> câu mới, nhưng bạn đã đạt giới hạn <b>" + S.newPerDay + "</b> câu mới hôm nay.<br>Tăng giới hạn trong ⚙️ Cài đặt hoặc bấm 📚 Học tự do.";
     renderDone(ex);
@@ -1011,7 +1013,7 @@ document.addEventListener("keydown", function(e){
 fillSettings();
 chips();
 refresh();
-tick = setInterval(function(){ if (mode === "sched" && (nextScheduled || !cur)) refresh(); }, 20000);
+tick = setInterval(function(){ if (mode === "sched" && !cur) refresh(); }, 20000);
 </script>
 </body>
 </html>
