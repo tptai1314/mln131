@@ -9,7 +9,7 @@ Bộ tài liệu ôn thi **441 câu hỏi trắc nghiệm** (phần Chủ nghĩa
 | `MLN131.pdf` | Ngân hàng đề gốc – 441 câu hỏi (135 trang) |
 | `MLN131_meo_hoc_thuoc.md` | Mẹo học thuộc: câu trả lời là **số**, là **người**, là **thời gian** |
 | `MLN131_thi_thu.html` | App **thi thử**: đồng hồ đếm ngược, chấm điểm ngay, xem lại câu sai |
-| `MLN131_flashcard.html` | **Flashcard kiểu Anki**: lặp lại ngắt quãng (SM-2), 4 nút Lại/Khó/Được/Dễ + **in ra giấy** thành thẻ cắt rời |
+| `MLN131_flashcard.html` | App **luyện chọn đáp án**: lặp lại ngắt quãng (SM-2), chấm đúng/sai ngay + 4 nút Lại/Khó/Được/Dễ |
 
 ## Cách dùng 2 app
 
@@ -17,15 +17,15 @@ Mở trực tiếp file `.html` bằng trình duyệt (Chạy offline, không c�
 
 **Thi thử** – chọn 10/20/50/100/441 câu, chọn thời gian (tắt/10/20/30/60 giây mỗi câu), chế độ xem đáp án ngay hoặc nộp bài rồi mới xem. Kết quả lưu trong trình duyệt.
 
-**Flashcard (kiểu Anki)** – lật thẻ có **lặp lại ngắt quãng**, chia 14 nhóm theo dạng câu & chủ đề:
+**Luyện chọn đáp án (lặp lại ngắt quãng)** – mỗi câu bạn **bấm chọn đáp án rồi bấm Kiểm tra**, biết đúng/sai ngay; sau đó chọn mức độ nhớ để app hẹn lịch. Chia 14 nhóm theo dạng câu & chủ đề:
 - Theo dạng: 🔢 câu trả lời là **số** (15) · 🧑 câu **"ai – nói gì"** (19) · ⏱️ câu **thời gian/năm** (39)
 - Theo chủ đề: Gia đình – Hôn nhân (64) · Quá độ – Chủ nghĩa XH (64) · Dân chủ – Nhà nước (62) · Liên minh – Cách mạng – Đảng (58) · Giai cấp công nhân (48) · Dân tộc (35) · Tác phẩm – Tư tưởng (33) · Tôn giáo (32) · Kinh tế – Cơ cấu (23) · Câu trộn (22)
 
-**Câu nhiều đáp án được báo trước** – 441 câu có **26 câu phải chọn 2–3 đáp án**; ngay trên câu hỏi hiện dải màu cam **⚠️ Câu này chọn 2 đáp án / 3 đáp án**. Trong số đó có **13 câu đề gốc hoàn toàn không ghi số đáp án** (vd câu 60, 207, 251, 414) nên nếu không báo trước thì rất dễ chọn thiếu. Dải báo hiện ở thẻ trước/sau, tab **📋 Danh sách** và khi in.
+**Câu nhiều đáp án được báo trước** – 441 câu có **26 câu phải chọn 2–3 đáp án**; ngay trên câu hỏi hiện dải màu cam **⚠️ Câu này chọn 2 đáp án / 3 đáp án**. Trong số đó có **13 câu đề gốc hoàn toàn không ghi số đáp án** (vd câu 60, 207, 251, 414) nên nếu không báo trước thì rất dễ chọn thiếu. Dải báo hiện ở mọi chế độ và trong tab **📋 Danh sách**.
 
-**Hai mặt giống hệt nhau** (câu hỏi + đủ A B C D) — mặt sau chỉ khác ở chỗ **đáp án đúng được tô xanh**, nên bạn đọc lại được cả câu lẫn các phương án gây nhiễu. Trả lời xong bấm 1 trong 4 mức độ nhớ, mỗi nút ghi rõ **bao lâu nữa thẻ quay lại**:
+**Chấm ngay tại chỗ** — đáp án đúng tô **xanh**, chỗ bạn chọn sai tô **đỏ**, chỗ bỏ sót tô **vàng**. Mỗi câu trả lời xong bấm 1 trong 4 mức độ nhớ, mỗi nút ghi rõ **bao lâu nữa câu đó quay lại**:
 
-| Nút | Thẻ mới | Thẻ đang ôn tập |
+| Nút | Câu mới | Câu đang ôn tập |
 |---|---|---|
 | **Lại** (quên) | về bước 1 phút | hệ số dễ −20 %, học lại sau 10 phút |
 | **Khó** | lặp bước hiện tại × 1,5 | khoảng cách × 1,2 |
@@ -33,11 +33,11 @@ Mở trực tiếp file `.html` bằng trình duyệt (Chạy offline, không c�
 | **Dễ** | tốt nghiệp 4 ngày | khoảng cách × hệ số dễ × 1,3 |
 
 Tham số (kiểu Anki mặc định): bước học `1 → 10 phút`, tốt nghiệp `1 ngày`, hệ số dễ khởi đầu `250 %`,
-xem trước `20 thẻ mới/ngày` — chỉnh được trong ⚙️ Cài đặt. Có **Hoàn tác** (Z), 4 chế độ: **🎯 Học hôm nay (theo lịch)** · **📚 Học tự do** · **✅ Tự luận (chọn đáp án)** · **📋 Danh sách câu hỏi** (xem trọn nhóm một lần, có tìm kiếm, mở rộng/thu gọn, in ra A4), và xuất tiến độ ra file JSON. Tiến độ lưu trong trình duyệt nên đóng tab vẫn giữ nguyên lịch.
+xem trước `20 câu mới/ngày` — chỉnh được trong ⚙️ Cài đặt. Có **Hoàn tác** (Z), 3 chế độ: **🎯 Học hôm nay (theo lịch)** · **📚 Học tự do** · **✅ Chỉ trắc nghiệm** · kèm tab **📋 Danh sách câu hỏi** (xem trọn nhóm một lần, có tìm kiếm, mở rộng/thu gọn), và xuất tiến độ ra file JSON. Tiến độ lưu trong trình duyệt nên đóng tab vẫn giữ nguyên lịch.
 
-### ✅ Chế độ "Tự luận" — bấm chọn đáp án, biết đúng/sai ngay
+### ✅ Chế độ "Chỉ trắc nghiệm" — làm một vòng liên tục, có bảng điểm
 
-Cùng bộ 441 câu nhưng bạn **bấm thẳng vào đáp án** thay vì tự lật thẻ:
+Cùng bộ 441 câu nhưng bạn **bấm thẳng vào đáp án** thay vì tự nhớ rồi mới xem:
 
 - Bấm A / B / C / D (câu nhiều đáp án thì bấm đủ số — app nhắc **"Câu này chọn N đáp án"**), bấm lại để bỏ chọn.
 - Bấm **✔️ Kiểm tra** → hiện ngay kết quả **ngay dưới các đáp án**:
@@ -52,18 +52,16 @@ Cùng bộ 441 câu nhưng bạn **bấm thẳng vào đáp án** thay vì tự 
 
 Mặc định kiểu Anki sẽ đẩy khoảng cách lên tận vài tháng, **không dùng được cho ôn gấp**. Mở ⚙️ Cài đặt và bấm
 **⏳ Ôn gấp 4 ngày** (hoặc **🔥 Ôn gấp 2 ngày**): app tự nén khoảng cách, hạ hệ số dễ và **chặn không cho vượt quá 🎯 ngày thi**
-(bạn có thể tự nhập ngày thi). Mỗi thẻ vẫn quay lại **3–4 lần** trước khi thi:
+(bạn có thể tự nhập ngày thi). Mỗi câu vẫn quay lại **3–4 lần** trước khi thi:
 
 ```
 10 phút  →  1 ngày  →  1,6 ngày  →  1,7 ngày (sát ngày thi)
 ```
 
-Với 441 thẻ: ~120 thẻ mới/ngày, tổng ~1.700 lượt trong 4 ngày ≈ **35–40 phút/ngày**.
-Còn 2 ngày thì chế độ gấp 2 ngày cho ~230 thẻ mới/ngày, khoảng cách 15 phút → 0,5 ngày → 1 ngày.
+Với 441 câu: ~120 câu mới/ngày, tổng ~1.700 lượt trong 4 ngày ≈ **35–40 phút/ngày**.
+Còn 2 ngày thì chế độ gấp 2 ngày cho ~230 câu mới/ngày, khoảng cách 15 phút → 0,5 ngày → 1 ngày.
 
-**In thành thẻ giấy:** nút *In 1 mặt* (gấp đôi) hoặc *In 2 mặt* (cắt rời) – 6 thẻ/tờ A4, chọn đúng kiểu lật cạnh dài/cạnh ngắn của máy in. Khổ A4, Margins: None, Scale 100%.
-
-**Phím tắt:** `Space` lật thẻ · `1` Lại · `2` Khó · `3` Được · `4` Dễ · `←` `→` xem trước/sau · `Z` hoàn tác · `S` trộn.
+**Phím tắt:** `1`–`4` chọn đáp án · `Space`/`Enter` kiểm tra · sau khi kiểm tra `1` Lại · `2` Khó · `3` Được · `4` Dễ · `←` `→` câu trước/sau · `Z` hoàn tác · `S` trộn.
 
 ## Vài thống kê hữu ích
 
