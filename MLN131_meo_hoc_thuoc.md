@@ -140,8 +140,8 @@
 | **Giữa TK XIX** | Mác – Ăngghen nghiên cứu phong trào CN châu Âu → đồng minh là **nông dân** | Q289 → B |
 | **Thua tư hữu thắng lợi** | Hôn nhân **một vợ một chồng** xuất hiện | Q257 → A |
 | **Pháp** | Nơi **phôi thai** dân chủ XHCN | Q345 → **B** |
-| **Công xã Pari (1871)** | **Nhà nước vô sản đầu tiên** trên thế giới | Q431 → **D** |
-| **Cách mạng Tháng Mười Nga (1917)** | Nền **DC XHCN đầu tiên**; đưa CNXH từ lý luận → hiện thực; đề Q397 ("cách mạng vô sản đầu tiên xóa bỏ giai cấp tư sản, lập chính quyền vô sản") → chọn **C**, *không* chọn Công xã Pari | Q344 → D, Q301 → A, Q397 → **C** |
+| **Công xã Pari (1871)** | **Nhà nước vô sản đầu tiên** trên thế giới; nguồn **phôi thai dân chủ XHCN** (thực tiễn đấu tranh giai cấp ở Pháp & Công xã Pari) | Q431 |
+| **Cách mạng Tháng Mười Nga (1917)** | Nền **DC XHCN đầu tiên**; đưa CNXH từ lý luận → hiện thực; Q397 hỏi "cách mạng vô sản đầu tiên xóa bỏ giai cấp tư sản, lập chính quyền vô sản" → chọn **Cách mạng tháng Mười Nga**, *không* chọn **Công xã Pari** | Q344, Q301, Q397 |
 | **CM Tháng Tám 1945** | Ch? độ **dân chủ nhân dân** ở VN | Q193 → **A** |
 | **→ năm 1953** | Sau khi Lênin mất, ngư?i ảnh hưởng: **J. Xtalin** | Q110 → **A** |
 | **Hội nghị Mátxcơva 1960** | Hoạt động lý luận – thực tiễn **tăng cư?ng hơn trước** | Q417 → **B** |
@@ -198,7 +198,7 @@
 |---|---|
 | **Mác – Ăngghen khởi xướng** → **Lênin bổ sung** học thuyết hình thái KT-XH | Q329 |
 | **Công xã Pari 1871** → Nhà nước vô sản đầu tiên trên thế giới | Q431 |
-| **Cách mạng Tháng Mười Nga 1917** → Nền dân chủ XHCN đầu tiên, đưa CNXH từ lý luận thành hiện thực; Q397 hỏi "cách mạng vô sản đầu tiên xóa bỏ giai cấp tư sản, lập chính quyền vô sản" → chọn Tháng Mười Nga (C), không chọn Công xã Pari | Q301, Q344, Q397 |
+| **Cách mạng Tháng Mười Nga 1917** → Nền dân chủ XHCN đầu tiên, đưa CNXH từ lý luận thành hiện thực; Q397 hỏi "cách mạng vô sản đầu tiên xóa bỏ giai cấp tư sản, lập chính quyền vô sản" → chọn Tháng Mười Nga, không chọn Công xã Pari | Q301, Q344, Q397 |
 | **Đại hội VI (1986)** → Khởi xướng công cuộc Đổi mới | Q441 |
 | **Cương lĩnh 2011 (ĐH XI)** → 8 phương hướng + đặc trưng "Dân giàu, nước mạnh, dân chủ, công bằng, văn minh" là đặc trưng **thứ 1** | Q166, Q173 |
 
