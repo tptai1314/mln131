@@ -52,27 +52,19 @@ h1{font-size:1.3rem;margin:4px 0 2px}
 .hint{color:var(--muted);font-size:.79rem;text-align:center;margin-top:auto;padding-top:10px}
 /* ---------- bam chon dap an ---------- */
 .opt.pick{cursor:pointer;user-select:none;display:flex;align-items:flex-start;gap:8px;position:relative}
-.opt.pick:hover:not(.done){background:#eef2ff;border-color:#c7d2fe}
+.opt.pick:hover:not(.locked){background:#eef2ff;border-color:#c7d2fe}
 .opt.pick .box{flex:0 0 17px;width:17px;height:17px;margin-top:2px;border:1.5px solid #cbd5e1;border-radius:5px;
                background:#fff;display:flex;align-items:center;justify-content:center;font-size:.68rem;color:#fff;font-weight:900}
-.opt.pick.on{background:#eef2ff;border-color:#6366f1;color:#3730a3;font-weight:700}
+.opt.pick.on{background:#eef2ff;border-color:#6366f1;color:#3730a3}
 .opt.pick.on .box{background:#4f46e5;border-color:#4f46e5}
 .opt.pick.on .box::after{content:"✓"}
-.opt.pick.good{background:#dcfce7;border-color:#4ade80;color:#14532d;font-weight:800}
+.opt.pick.good{background:#dcfce7;border-color:#4ade80;color:#14532d}
 .opt.pick.good .box{background:#16a34a;border-color:#16a34a}
 .opt.pick.good .box::after{content:"✓"}
-.opt.pick.bad{background:#ffe4e6;border-color:#fb7185;color:#9f1239;font-weight:800}
+.opt.pick.bad{background:#ffe4e6;border-color:#fb7185;color:#9f1239}
 .opt.pick.bad .box{background:#e11d48;border-color:#e11d48}
 .opt.pick.bad .box::after{content:"✕"}
-.opt.pick.miss{background:#fef9c3;border-color:#facc15;color:#854d0e;font-weight:800}
-.opt.pick.miss .box{border-color:#eab308}
-.opt.pick.miss .box::after{content:"!";color:#a16207}
-.opt.pick.done{cursor:default}
-.opt.pick .rlabel{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:.66rem;font-weight:900;
-                  border-radius:6px;padding:2px 7px;letter-spacing:.2px}
-.opt.pick.good .rlabel{background:#16a34a;color:#fff}
-.opt.pick.bad  .rlabel{background:#e11d48;color:#fff}
-.opt.pick.miss .rlabel{background:#facc15;color:#713f12}
+.opt.pick.locked{cursor:default}
 
 /* thanh "Kiem tra" nam duoi cac dap an */
 .fbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin:2px 0 4px}
@@ -83,15 +75,6 @@ h1{font-size:1.3rem;margin:4px 0 2px}
 .fbar button.pri:hover{filter:brightness(1.08)}
 .fbar button:disabled{opacity:.45;cursor:not-allowed}
 .pinfo{font-size:.8rem;font-weight:700;color:#64748b}
-.qverdict{font-size:.92rem;font-weight:800;padding:11px 14px;border-radius:12px;line-height:1.5;margin:2px 0 10px}
-.qverdict.ok{background:#dcfce7;color:#166534;border:1.5px solid #4ade80}
-.qverdict.no{background:#ffe4e6;color:#9f1239;border:1.5px solid #fb7185}
-.qverdict.mid{background:#fef9c3;color:#854d0e;border:1.5px solid #facc15}
-.qverdict.info{background:#eef2ff;color:#3730a3;border:1.5px solid #c7d2fe}
-.qverdict .how{display:block;margin-top:7px;padding-top:7px;border-top:1px dashed rgba(100,116,139,.35);
-               font-size:.79rem;font-weight:700;color:#475569}
-.qverdict .how kbd{background:#fff;border:1px solid #cbd5e1;border-radius:5px;padding:1px 6px;font:inherit;font-size:.75rem;
-                   color:#334155;box-shadow:0 1px 0 #cbd5e1}
 .qhint{font-size:.78rem;color:#64748b;font-weight:600;margin-left:4px}
 .qdone{text-align:center;padding:24px 10px}
 .qdone .big{font-size:3rem}
@@ -177,7 +160,6 @@ button.sm{padding:8px 11px;font-size:.84rem}
         <div class="tagrow" id="fTags"></div>
         <div class="q" id="fQ"></div>
         <div id="fOpts"></div>
-        <div id="fVerdict" class="qverdict" style="display:none"></div>
         <div class="fbar" id="fBar">
           <button id="fCheck" class="pri">✔️ Kiểm tra</button>
           <span id="fPickInfo" class="pinfo"></span>
@@ -216,10 +198,10 @@ button.sm{padding:8px 11px;font-size:.84rem}
   </div>
 
   <div class="legend">
-    <b>Cách dùng:</b> bấm chọn đáp án (câu nhiều đáp án thì bấm đủ số) → bấm <b>Kiểm tra</b> → đúng/sai hiện ra ngay
-    (đáp án đúng tô xanh, chỗ bạn chọn sai tô đỏ, chỗ đúng mà bạn bỏ sót tô vàng) → bấm 1 trong 4 mức độ nhớ
+    <b>Cách dùng:</b> bấm chọn đáp án (câu nhiều đáp án thì bấm đủ số) → bấm <b>Kiểm tra</b> → đáp án đúng tô xanh,
+    chỗ bạn chọn sai tô đỏ → bấm 1 trong 4 mức độ nhớ
     để app hẹn ngày gặp lại (nhớ càng chắc → càng lâu mới gặp lại).<br>
-    <b>Điểm tự động:</b> <b>sai</b> = Lại · <b>đúng một phần</b> = Khó · <b>đúng</b> = Được · <b>nhanh &amp; đúng</b> (dưới 4 giây) = Dễ.<br>
+    <b>Gợi ý mức độ:</b> <b>sai</b> = Lại · <b>đúng một phần</b> = Khó · <b>đúng</b> = Được · <b>nhanh &amp; đúng</b> (dưới 4 giây) = Dễ.<br>
     <b>Hai chế độ:</b> 🎯 <b>Học hôm nay</b> (theo lịch ôn) · 📚 <b>Học tự do</b> (đi hết nhóm một vòng, có Trước/Sau).<br>
     <b>Công thức lặp lại:</b> câu mới đi qua <i>bước học</i> (mặc định 1 → 10 phút) rồi <i>tốt nghiệp</i> 1 ngày.
     Khi đã ở vòng ôn tập, mỗi lần trả lời: <b>Được</b> = khoảng cách × hệ số dễ · <b>Khó</b> = × 1,2 ·
@@ -474,25 +456,22 @@ function multiWide(c){
   return c.a.length > 1 ? '<span class="tag multi wide">⚠️ Câu này chọn ' + c.a.length + ' đáp án</span>' : '';
 }
 function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]; }); }
-/* o dap an chon duoc, co hop checkbox */
-function pickHTML(c, picked, res, mark){
+/* o dap an chon duoc, co hop checkbox.
+   res = null: mat truoc binh thuong.
+   res = 0/1/2: chi to mau, khong them nhan/khung/chu, khong doi kich thuoc. */
+function pickHTML(c, picked, res){
   return c.o.map(function(t, i){
-    let cls = "opt pick", rl = "";
+    let cls = "opt pick";
     const isAns = c.a.indexOf(LETTER[i]) >= 0;
-    if (res === 1) {
-      if (picked.indexOf(i) >= 0){ cls += " good done"; rl = "ĐÚNG"; }
-      else if (isAns){ cls += " miss done"; rl = "BỎ SÓT"; }
-      else cls += " done";
-    } else if (res === 2) {
-      if (isAns){ cls += " good done"; rl = "ĐÁP ÁN"; } else cls += " done";
+    if (res === 1 || res === 2) {
+      cls += isAns ? " good locked" : " locked";
     } else if (res === 0) {
-      if (picked.indexOf(i) >= 0){ cls += " bad done"; rl = "SAI"; }
-      else if (isAns){ cls += " miss done"; rl = "ĐÁP ÁN"; }
-      else cls += " done";
+      if (isAns) cls += " good locked";
+      else if (picked.indexOf(i) >= 0) cls += " bad locked";
+      else cls += " locked";
     } else if (picked.indexOf(i) >= 0) cls += " on";
     return '<div class="' + cls + '" data-i="' + i + '"><span class="box"></span><span class="txt"><b>'
-      + LETTER[i] + '.</b> ' + esc(t) + '</span>'
-      + (mark && rl ? '<span class="rlabel">' + rl + '</span>' : "") + '</div>';
+      + LETTER[i] + '.</b> ' + esc(t) + '</span></div>';
   }).join("");
 }
 /* so sanh dap an nguoi hoc chon voi dap an dung */
@@ -502,25 +481,6 @@ function comparePick(c, picked){
   const extra = picked.filter(function(i){ return ans.indexOf(i) < 0; });
   return { ok: miss.length === 0 && extra.length === 0, miss: miss, extra: extra,
            need: ans.length, pick: picked.length };
-}
-/* nhan xet ghi ro cho nguoi hoc */
-function verdictText(c, picked, r, rating){
-  const need = r.need + " đáp án", missTxt = r.miss.map(function(i){ return LETTER[i]; }).join(", ");
-  const pickTxt = picked.map(function(i){ return LETTER[i]; }).join(", ") || "(chưa chọn)";
-  let head;
-  if (r.ok) head = "✅ <b>CHÍNH XÁC!</b> Đáp án đúng: <b>" + answerLetters(c) + "</b>" + (r.need > 1 ? " (chọn đủ " + r.need + " đáp án)" : "") + ".";
-  else if (picked.length === 0) head = "🍃 <b>BẠN CHƯA CHỌN GÌ.</b> Câu này chọn <b>" + need + "</b> — đáp án đúng là <b>" + answerLetters(c) + "</b>.";
-  else if (r.extra.length === 0) head = "🟡 <b>GẦN ĐÚNG.</b> Bạn chọn " + pickTxt + " — còn <b>bỏ sót " + missTxt
-    + "</b>. Câu này chọn <b>" + need + "</b>, đáp án đúng là <b>" + answerLetters(c) + "</b>.";
-  else head = "❌ <b>CHƯA ĐÚNG.</b> Bạn chọn " + pickTxt + " (" + r.pick + " đáp án) — câu này chọn <b>" + need
-    + "</b>, đáp án đúng là <b>" + answerLetters(c) + "</b>.";
-  return head;
-}
-/* dong huong dan o duoi ket qua */
-function verdictHow(ok, rating, hasNext){
-  if (rating === "reveal") return "Bạn xem đáp án nên <b>không tính đúng/sai</b>. " + (hasNext ? "Bấm <kbd>Enter</kbd> hoặc <b>Câu tiếp ▶</b> để đi tiếp." : "Đây là câu cuối.");
-  const lbl = { easy: "Dễ", good: "Được", hard: "Khó", again: "Lại" }[rating] || rating;
-  return "Đã xếp vào lịch ôn mức <b>" + lbl + "</b>. " + (hasNext ? "Bấm <kbd>Enter</kbd> hoặc <b>Câu tiếp ▶</b> để sang câu sau." : "Đây là câu cuối — bấm <b>Câu tiếp ▶</b> để xem kết quả cả vòng.");
 }
 function answerLetters(c){ return c.a.split("").join(" – "); }
 function statsHTML(){
@@ -561,7 +521,6 @@ function renderDone(extra){
   $("fQ").innerHTML = '<div class="done"><div class="big">🎉</div><b>Hết câu đến hạn!</b><p>' + extra + '</p></div>';
   ["bAgain","bHard","bGood","bEasy"].forEach(function(i){ $(i).disabled = true; $(i).classList.remove("pulse"); });
   $("fTags").innerHTML = ""; $("fOpts").innerHTML = "";
-  $("fVerdict").style.display = "none";
   $("fBar").style.display = "none";
   $("fHint").innerHTML = "";
   $("bar").style.width = "100%";
@@ -604,12 +563,11 @@ function render(){
     const tg = tagHTML(card);
     $("fTags").innerHTML = tg;
     $("fQ").textContent = card.q;
-    $("fOpts").innerHTML = pickHTML(card, fPicked, null, true);
-    $("fVerdict").style.display = "none";
+    $("fOpts").innerHTML = pickHTML(card, fPicked, null);
     $("fCheck").disabled = false; $("fCheck").textContent = "✔️ Kiểm tra";
     $("fCheck").className = "pri";
     $("fPickInfo").textContent = card.a.length > 1 ? "chọn đủ " + card.a.length + " đáp án" : "";
-    $("fHint").innerHTML = "💡 Bấm chọn đáp án rồi bấm <b>Kiểm tra</b> (hoặc <b>Space</b>/<b>Enter</b>)";
+    $("fHint").innerHTML = "💡 Chọn đáp án → bấm <b>Kiểm tra</b> (hoặc <b>Space</b>/<b>Enter</b>) → bấm 1 trong 4 mức độ nhớ ở dưới";
     ["bAgain","bHard","bGood","bEasy"].forEach(function(id){ $(id).classList.remove("pulse"); });
     $("lAgain").textContent = previewLabel(st, "again");
     $("lHard").textContent  = previewLabel(st, "hard");
@@ -757,12 +715,11 @@ function renderFree(card){
     const tg = tagHTML(card);
     $("fTags").innerHTML = tg;
     $("fQ").textContent = card.q;
-    $("fOpts").innerHTML = pickHTML(card, fPicked, null, true);
-    $("fVerdict").style.display = "none";
+    $("fOpts").innerHTML = pickHTML(card, fPicked, null);
     $("fCheck").disabled = false; $("fCheck").textContent = "✔️ Kiểm tra";
     $("fCheck").className = "pri";
     $("fPickInfo").textContent = card.a.length > 1 ? "chọn đủ " + card.a.length + " đáp án" : "";
-    $("fHint").innerHTML = "💡 Bấm chọn đáp án rồi bấm <b>Kiểm tra</b> (hoặc <b>Space</b>/<b>Enter</b>)";
+    $("fHint").innerHTML = "💡 Chọn đáp án → bấm <b>Kiểm tra</b> (hoặc <b>Space</b>/<b>Enter</b>) → bấm 1 trong 4 mức độ nhớ ở dưới";
     ["bAgain","bHard","bGood","bEasy"].forEach(function(id){ $(id).classList.remove("pulse"); });
     $("lAgain").textContent = previewLabel(st, "again");
     $("lHard").textContent  = previewLabel(st, "hard");
@@ -792,41 +749,21 @@ function fPick(i){
       fPicked.push(i);
     }
   }
-  if (cur.a.length === 1 && fPicked.length === 1) {
+  if (fPicked.length === cur.a.length) {
     fCheck();
     return;
   }
-  if (cur.a.length > 1 && fPicked.length === cur.a.length) {
-    fCheck();
-    return;
-  }
-  $("fOpts").innerHTML = pickHTML(cur, fPicked, null, true);
-  $("fPickInfo").textContent = cur.a.length > 1
-    ? "đã chọn " + fPicked.length + "/" + cur.a.length + " đáp án"
-    : (fPicked.length ? "đã chọn " + LETTER[fPicked[0]] : "");
+  $("fOpts").innerHTML = pickHTML(cur, fPicked, null);
 }
-/* cham ngay tren cau hoi: to xanh/do/vang + hien ket qua */
+/* cham ngay tren cau hoi: chi to xanh dap an dung / do dap an chon sai.
+   Khong them khung ket qua, khong doi chu, khong doi kich thuoc. */
 function fCheck(){
   if (!cur || fRes !== null) return;
+  if (fPicked.length === 0) return;   /* chua chon dap an -> giu nguyen mat truoc */
   const picked = fPicked.slice().sort(function(a, b){ return a - b; });
   const r = comparePick(cur, picked);
-  const dur = Date.now() - (fStart || Date.now());
-  const rating = r.ok ? (dur <= 4000 ? "easy" : "good")
-                      : (picked.length === 0 ? "again" : (r.extra.length === 0 ? "hard" : "again"));
-  fRes = { ok: r.ok, r: r, rating: rating };
-  $("fOpts").innerHTML = pickHTML(cur, picked, r.ok ? 1 : 0, true);
-  $("fVerdict").style.display = "";
-  $("fVerdict").className = "qverdict " + (r.ok ? "ok" : (picked.length > 0 && r.extra.length === 0 ? "mid" : "no"));
-  $("fVerdict").innerHTML = verdictText(cur, picked, r)
-    + '<span class="how">Chấm sẵn mức <b>' + ({ easy: "Dễ", good: "Được", hard: "Khó", again: "Lại" })[rating]
-    + "</b> — hoặc bấm mức khác ở dưới rồi app hẹn ngày gặp lại.</span>";
-  $("fCheck").textContent = "↻ Chấm lại";
-  $("fCheck").className = "";
-  $("fPickInfo").textContent = "";
-  $("fHint").innerHTML = "💡 <b>Giờ bấm 1 trong 4 mức độ nhớ ở dưới</b> (hoặc <kbd>1</kbd>–<kbd>4</kbd>) để hẹn ngày gặp lại";
-  /* tu dong danh dau cau vao dung muc vua cham (neu ban bam nut tuong ung la khop) */
-  ["bAgain","bHard","bGood","bEasy"].forEach(function(id){ $(id).classList.remove("pulse"); });
-  $({ again: "bAgain", hard: "bHard", good: "bGood", easy: "bEasy" }[rating]).classList.add("pulse");
+  fRes = { ok: r.ok, r: r };
+  $("fOpts").innerHTML = pickHTML(cur, picked, r.ok ? 1 : 0);
 }
 /* ================= SU KIEN ================= */
 function setMode(m){
@@ -881,11 +818,9 @@ $("tocBox").addEventListener("toggle", function(){ if ($("tocBox").open) renderT
 $("fCheck").onclick = function(){
   if (!cur) return;
   if (fRes === null) fCheck();
-  else { fRes = null; fPicked = []; fStart = Date.now(); $("fOpts").innerHTML = pickHTML(cur, [], null, true);
-         $("fVerdict").style.display = "none"; $("fCheck").textContent = "✔️ Kiểm tra"; $("fCheck").className = "pri";
-         $("fHint").innerHTML = "💡 Bấm chọn đáp án rồi bấm <b>Kiểm tra</b> (hoặc <b>Space</b>/<b>Enter</b>)";
-         $("fPickInfo").textContent = cur.a.length > 1 ? "chọn đủ " + cur.a.length + " đáp án" : "";
-         ["bAgain","bHard","bGood","bEasy"].forEach(function(id){ $(id).classList.remove("pulse"); }); }
+  else { fRes = null; fPicked = []; fStart = Date.now(); $("fOpts").innerHTML = pickHTML(cur, [], null);
+         $("fCheck").textContent = "✔️ Kiểm tra"; $("fCheck").className = "pri";
+         $("fPickInfo").textContent = cur.a.length > 1 ? "chọn đủ " + cur.a.length + " đáp án" : ""; }
 };
 $("fOpts").onclick = function(e){
   if (!cur || fRes !== null) return;

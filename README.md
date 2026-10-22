@@ -23,7 +23,7 @@ Mở trực tiếp file `.html` bằng trình duyệt (Chạy offline, không c�
 
 **Câu nhiều đáp án được báo trước** – 441 câu có **26 câu phải chọn 2–3 đáp án**; ngay trên câu hỏi hiện dải màu cam **⚠️ Câu này chọn 2 đáp án / 3 đáp án**. Trong số đó có **13 câu đề gốc hoàn toàn không ghi số đáp án** (vd câu 60, 207, 251, 414) nên nếu không báo trước thì rất dễ chọn thiếu. Dải báo hiện ở mọi chế độ và trong tab **📋 Danh sách**.
 
-**Chấm ngay tại chỗ** — đáp án đúng tô **xanh**, chỗ bạn chọn sai tô **đỏ**, chỗ bỏ sót tô **vàng**. Mỗi câu trả lời xong bấm 1 trong 4 mức độ nhớ, mỗi nút ghi rõ **bao lâu nữa câu đó quay lại**:
+**Chấm ngay tại chỗ** — chỉ tô màu: đáp án đúng tô **xanh**, chỗ bạn chọn sai tô **đỏ**; không thêm khung/nhãn, không đổi kích thước thẻ. Mỗi câu trả lời xong bấm 1 trong 4 mức độ nhớ, mỗi nút ghi rõ **bao lâu nữa câu đó quay lại**:
 
 | Nút | Câu mới | Câu đang ôn tập |
 |---|---|---|
@@ -40,11 +40,11 @@ xem trước `20 câu mới/ngày` — chỉnh được trong ⚙️ Cài đặt
 Mỗi câu hiện dưới dạng thẻ: bạn **bấm thẳng vào đáp án**, bấm **✔️ Kiểm tra**, rồi chọn một trong **4 nút độ thuộc** — app tự tính **bao lâu nữa câu đó quay lại**:
 
 - Bấm A / B / C / D (câu nhiều đáp án thì bấm đủ số — app nhắc **"Câu này chọn N đáp án"**), bấm lại để bỏ chọn.
-- Bấm **✔️ Kiểm tra** → hiện ngay kết quả **ngay dưới các đáp án**:
-  - ✅ xanh: đúng hết · 🟡 vàng: *gần đúng* (chỉ bỏ sót, không chọn sai) · ❌ đỏ: chọn sai.
-  - Đáp án đúng tô **xanh**, chỗ bạn chọn sai tô **đỏ**, chỗ bỏ sót tô **vàng**.
-  - Dòng dưới cùng ghi rõ **đáp án đúng** + gợi ý sẵn **mức độ nhớ** + cách đi tiếp.
-- **4 nút độ thuộc** (Lại / Khó / Được / Dễ): app gợi ý sẵn mức theo độ đúng, bạn vẫn đổi được. Điểm tự động: **sai = Lại** · **gần đúng = Khó** · **đúng = Được** · **đúng trong 4 giây = Dễ**.
+- Bấm **✔️ Kiểm tra** → **chỉ tô màu ngay trên các đáp án**, không thêm gì khác:
+  - Đáp án đúng tô **xanh**; chỗ bạn chọn sai tô **đỏ**.
+  - Chưa chọn đáp án nào thì **không có gì thay đổi** — thẻ vẫn y như mặt trước.
+  - Không hiện khung kết quả, không nhãn "đúng/sai", không đổi kích thước/kiểu chữ của thẻ.
+- **4 nút độ thuộc** (Lại / Khó / Được / Dễ): bạn tự chọn mức phù hợp; nút nào cũng ghi rõ **bao lâu nữa câu đó quay lại**.
 - Phím tắt: **1–4** chọn đáp án · **Space/Enter** kiểm tra · sau khi kiểm tra **1–4** chọn độ thuộc · **←/→** câu trước/sau · **Z** hoàn tác · **S** trộn.
 
 ### ⏳ Chỉ còn vài ngày trước khi thi?
